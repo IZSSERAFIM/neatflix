@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:neatflix/assets.dart';
 
 class CustomAppBar extends StatelessWidget {
   final double scrollOffset;
@@ -10,11 +12,11 @@ class CustomAppBar extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
       color:
-          Colors.red.withOpacity((scrollOffset / 350).clamp(0, 1).toDouble()),
+          Colors.black.withOpacity((scrollOffset / 350).clamp(0, 1).toDouble()),
       child: SafeArea(
         child: Row(
           children: [
-            Image.asset('assets/images/netflix_logo0.png'),
+            Image.asset(Assets.netflixLogo0),
             const SizedBox(width: 12.0),
             Expanded(
               child: Row(
