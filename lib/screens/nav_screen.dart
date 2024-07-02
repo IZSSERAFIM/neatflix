@@ -17,14 +17,12 @@ class _NavScreenState extends State<NavScreen> {
     Scaffold(),
     Scaffold(),
     Scaffold(),
-    Scaffold(),
   ];
   final Map<String, IconData> _icons = const {
-    'Home': Icons.home,
+    'Video': Icons.video_library,
+    'Music': Icons.audiotrack,
     'Search': Icons.search,
-    'Coming Soon': Icons.queue_play_next,
-    'Downloads': Icons.file_download,
-    'More': Icons.menu,
+    'List': Icons.list_alt,
   };
   int _currentIndex = 0;
   @override
@@ -34,28 +32,30 @@ class _NavScreenState extends State<NavScreen> {
         create: (_) => AppBarCubit(),
         child: _screens[_currentIndex],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.black,
-        items: _icons
-            .map(
-              (title, icon) => MapEntry(
-                title,
-                BottomNavigationBarItem(
-                  icon: Icon(icon, size: 30.0),
-                  label: title,
-                ),
-              ),
+      bottomNavigationBar: !Responsive.isDesktop(context)
+          ? BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              backgroundColor: Colors.black,
+              items: _icons
+                  .map(
+                    (title, icon) => MapEntry(
+                      title,
+                      BottomNavigationBarItem(
+                        icon: Icon(icon, size: 30.0),
+                        label: title,
+                      ),
+                    ),
+                  )
+                  .values
+                  .toList(),
+              currentIndex: _currentIndex,
+              selectedItemColor: Colors.white,
+              unselectedItemColor: Colors.grey,
+              selectedFontSize: 11.0,
+              unselectedFontSize: 11.0,
+              onTap: (index) => setState(() => _currentIndex = index),
             )
-            .values
-            .toList(),
-        currentIndex: _currentIndex,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.grey,
-        selectedFontSize: 11.0,
-        unselectedFontSize: 11.0,
-        onTap: (index) => setState(() => _currentIndex = index),
-      ),
+          : null,
     );
   }
 }

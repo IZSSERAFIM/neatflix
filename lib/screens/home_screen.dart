@@ -52,7 +52,9 @@ class _HomeScreenState extends State<HomeScreen> {
         controller: _scrollcontroller,
         slivers: [
           SliverToBoxAdapter(
-            child: ContentHeader(sintelContent),
+            child: ContentHeader(
+                key: PageStorageKey('contentheader'),
+                featuredContent: sintelContent),
           ),
           SliverPadding(
             padding: const EdgeInsets.only(top: 20.0),
