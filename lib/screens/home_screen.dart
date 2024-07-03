@@ -32,18 +32,13 @@ class _HomeScreenState extends State<HomeScreen> {
     final Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       extendBodyBehindAppBar: true,
-      floatingActionButton: FloatingActionButton(
-        foregroundColor: Colors.white,
-        backgroundColor: Colors.grey[850],
-        onPressed: () {},
-        child: const Icon(Icons.cast),
-      ),
       appBar: PreferredSize(
         preferredSize: Size(screenSize.width, 50.0),
         child: BlocBuilder<AppBarCubit, double>(
           builder: (context, scrollOffset) {
             return CustomAppBar(
               scrollOffset: scrollOffset,
+              isHome: true,
             );
           },
         ),

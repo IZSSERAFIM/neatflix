@@ -112,3 +112,8 @@ final List<Content> trending = const [
   Content(name: 'The Crown', imageUrl: Assets.crown),
   Content(name: 'Dogs', imageUrl: Assets.dogs),
 ];
+
+final List<Content> searchResults = const [
+  Content(name: 'Stranger Things', imageUrl: Assets.strangerThings),
+  Content(name: 'The Witcher', imageUrl: Assets.witcher),
+];

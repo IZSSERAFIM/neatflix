@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:neatflix/models/content_model.dart';
 import 'package:neatflix/widgets/widgets.dart';
 import 'package:video_player/video_player.dart';
+import 'package:neatflix/screens/screens.dart';
 
 class ContentHeader extends StatelessWidget {
   const ContentHeader({
@@ -132,7 +133,16 @@ class _ContentHeaderMobileState extends State<_ContentHeaderMobile> {
               VerticalIconButton(
                 icon: Icons.info_outline,
                 title: 'Info',
-                onTap: () {},
+                onTap: () {
+                  _videoController.pause();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          PlayerScreen(content: widget.featuredContent),
+                    ),
+                  );
+                },
               ),
             ],
           ),
@@ -212,6 +222,7 @@ class _ContentHeaderDesktopState extends State<_ContentHeaderDesktop> {
                   ),
           ),
           Positioned(
+            top: 0.0,
             left: 0.0,
             right: 0.0,
             bottom: -1.0,
@@ -266,7 +277,16 @@ class _ContentHeaderDesktopState extends State<_ContentHeaderDesktop> {
                     ),
                     const SizedBox(width: 16.0),
                     TextButton.icon(
-                      onPressed: () {},
+                      onPressed: () {
+                        _videoController.pause();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                PlayerScreen(content: widget.featuredContent),
+                          ),
+                        );
+                      },
                       icon: Icon(Icons.info_outline, size: 30.0),
                       label: const Text(
                         'More Info',
