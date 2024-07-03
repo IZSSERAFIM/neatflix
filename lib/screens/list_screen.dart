@@ -38,6 +38,7 @@ class _ListScreenState extends State<ListScreen> {
           builder: (context, scrollOffset) {
             return CustomAppBar(
               scrollOffset: scrollOffset,
+              isList: true,
             );
           },
         ),

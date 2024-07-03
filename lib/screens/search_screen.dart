@@ -50,6 +50,7 @@ class _SearchScreenMobileState extends State<_SearchScreenMobile> {
           builder: (context, scrollOffset) {
             return CustomAppBar(
               scrollOffset: scrollOffset,
+              isSearch: true,
             );
           },
         ),
