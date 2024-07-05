@@ -6,3 +6,5 @@ export 'content_list.dart';
 export 'responsive.dart';
 export 'search_bar.dart';
 export 'rating_bar.dart';
+export 'video_description.dart';
+export 'header_player.dart';

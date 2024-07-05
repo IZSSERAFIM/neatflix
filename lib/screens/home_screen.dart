@@ -4,13 +4,25 @@ import 'package:neatflix/data/data.dart';
 import 'package:neatflix/widgets/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  Widget build(BuildContext context) {
+    return Responsive(
+      mobile: _HomeScreenMobile(),
+      desktop: _HomeScreenDesktop(),
+    );
+  }
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenMobile extends StatefulWidget {
+  const _HomeScreenMobile({Key? key}) : super(key: key);
+  @override
+  State<_HomeScreenMobile> createState() => _HomeScreenMobileState();
+}
+
+class _HomeScreenMobileState extends State<_HomeScreenMobile> {
   ScrollController _scrollcontroller = ScrollController();
   @override
   void initState() {
@@ -45,6 +57,74 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: CustomScrollView(
         controller: _scrollcontroller,
+        slivers: [
+          SliverToBoxAdapter(
+            child: ContentHeader(
+                key: PageStorageKey('contentheader'),
+                featuredContent: sintelContent),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.only(top: 20.0),
+            sliver: SliverToBoxAdapter(
+              child: Previews(
+                key: PageStorageKey('previews'),
+                title: 'Previews',
+                contentList: previews,
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: ContentList(
+              key: PageStorageKey('myList'),
+              title: 'My List',
+              contentList: myList,
+              isOriginals: false,
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: ContentList(
+              key: PageStorageKey('originals'),
+              title: 'Neatflix Originals',
+              contentList: originals,
+              isOriginals: true,
+            ),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.only(bottom: 20.0),
+            sliver: SliverToBoxAdapter(
+              child: ContentList(
+                key: PageStorageKey('trending'),
+                title: 'Trending',
+                contentList: trending,
+                isOriginals: false,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _HomeScreenDesktop extends StatefulWidget {
+  const _HomeScreenDesktop({super.key});
+
+  @override
+  State<_HomeScreenDesktop> createState() => _HomeScreenDesktopState();
+}
+
+class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
+  @override
+  Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.of(context).size;
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size(screenSize.width, 50.0),
+        child: CustomAppBar(
+          isHome: true,
+        ),
+      ),
+      body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
             child: ContentHeader(

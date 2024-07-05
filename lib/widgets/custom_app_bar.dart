@@ -10,12 +10,14 @@ class CustomAppBar extends StatelessWidget {
   final bool isList;
   final bool isSearch;
   final bool isProfile;
+  final bool isPlayer;
   const CustomAppBar({
     this.scrollOffset = 0.0,
     this.isHome = false,
     this.isList = false,
     this.isSearch = false,
     this.isProfile = false,
+    this.isPlayer = false,
   });
   @override
   Widget build(BuildContext context) {
@@ -28,6 +30,8 @@ class CustomAppBar extends StatelessWidget {
       PageIndex = 2;
     } else if (isProfile) {
       PageIndex = 3;
+    } else if (isPlayer) {
+      PageIndex = 4;
     }
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
@@ -87,25 +91,35 @@ class _CustomAppBarDesktop extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _AppBarButton(
-                    title: 'Home',
-                    onTap: () {
-                      if (PageIndex == 0) {
-                        return;
-                      }
-                      print('Home');
-                      Navigator.pop(context);
-                    }),
+                  title: 'Home',
+                  onTap: () {
+                    if (PageIndex == 0) {
+                      return;
+                    }
+                    print('Home');
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HomeScreen(),
+                      ),
+                    );
+                  },
+                ),
                 _AppBarButton(
-                    title: 'List',
-                    onTap: () {
-                      print('List');
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => ListScreen(),
-                      //   ),
-                      // );
-                    }),
+                  title: 'List',
+                  onTap: () {
+                    if (PageIndex == 1) {
+                      return;
+                    }
+                    print('List');
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ListScreen(),
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -118,7 +132,7 @@ class _CustomAppBarDesktop extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   onPressed: () {
                     if (PageIndex == 2) return;
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) => SearchScreen(),
