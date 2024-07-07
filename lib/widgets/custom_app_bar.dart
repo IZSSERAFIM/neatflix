@@ -38,7 +38,7 @@ class CustomAppBar extends StatelessWidget {
       color:
           Colors.black.withOpacity((scrollOffset / 350).clamp(0, 1).toDouble()),
       child: Responsive(
-        mobile: _CustomAppBarMobile(),
+        mobile: _CustomAppBarMobile(PageIndex),
         desktop: _CustomAppBarDesktop(PageIndex: PageIndex),
       ),
     );
@@ -46,12 +46,22 @@ class CustomAppBar extends StatelessWidget {
 }
 
 class _CustomAppBarMobile extends StatelessWidget {
+  final int PageIndex;
+  const _CustomAppBarMobile(this.PageIndex);
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Row(
         children: [
-          Image.asset(Assets.netflixLogo0),
+          GestureDetector(
+            child: Image.asset(Assets.netflixLogo0),
+            onTap: () => Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => NavScreen(),
+              ),
+            ),
+          ),
           const SizedBox(width: 12.0),
           const Spacer(),
           Expanded(
@@ -60,7 +70,15 @@ class _CustomAppBarMobile extends StatelessWidget {
               children: [
                 IconButton(
                   padding: EdgeInsets.zero,
-                  onPressed: () {},
+                  onPressed: () {
+                    if (PageIndex == 3) return;
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProfileScreen(),
+                      ),
+                    );
+                  },
                   icon: Icon(
                     Icons.person_outline,
                     size: 30.0,
@@ -148,7 +166,14 @@ class _CustomAppBarDesktop extends StatelessWidget {
                 const SizedBox(width: 16.0),
                 IconButton(
                   padding: EdgeInsets.zero,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProfileScreen(),
+                      ),
+                    );
+                  },
                   icon: Icon(
                     Icons.person_outline,
                     size: 28.0,

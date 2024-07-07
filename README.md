@@ -1,6 +1,6 @@
 # NeatFlix
 
-NeatFlix华为云仓库，储存前后端代码
+NeatFlix华为云仓库，储存前端代码
 =======
 
 A new Flutter project.
