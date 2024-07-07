@@ -98,8 +98,9 @@ class _SignupPageState extends State<SignupPage> {
                         decoration: InputDecoration(
                           hintText: "Email",
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(18),
-                              borderSide: BorderSide.none),
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: BorderSide.none,
+                          ),
                           fillColor: Colors.purple.withOpacity(0.1),
                           filled: true,
                           prefixIcon: const Icon(Icons.email),
@@ -111,9 +112,17 @@ class _SignupPageState extends State<SignupPage> {
                           });
                         },
                         validator: (value) {
-                          return value!.trim().isNotEmpty
-                              ? null
-                              : "email cannot be empty";
+                          if (value == null || value.trim().isEmpty) {
+                            return "Email cannot be empty";
+                          }
+                          // 正则表达式检查电子邮件格式
+                          String pattern =
+                              r'^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$';
+                          RegExp regex = RegExp(pattern);
+                          if (!regex.hasMatch(value)) {
+                            return "Please enter a valid email address";
+                          }
+                          return null;
                         },
                       ),
                       const SizedBox(height: 20),
