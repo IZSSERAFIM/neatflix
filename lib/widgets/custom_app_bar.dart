@@ -55,12 +55,15 @@ class _CustomAppBarMobile extends StatelessWidget {
         children: [
           GestureDetector(
             child: Image.asset(Assets.netflixLogo0),
-            onTap: () => Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => NavScreen(),
-              ),
-            ),
+            onTap: () {
+              if (PageIndex == 0) return;
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => NavScreen(),
+                ),
+              );
+            },
           ),
           const SizedBox(width: 12.0),
           const Spacer(),
@@ -167,6 +170,7 @@ class _CustomAppBarDesktop extends StatelessWidget {
                 IconButton(
                   padding: EdgeInsets.zero,
                   onPressed: () {
+                    if (PageIndex == 3) return;
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(

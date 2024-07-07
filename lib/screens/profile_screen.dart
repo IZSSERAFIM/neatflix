@@ -40,7 +40,7 @@ class _ProfileScreenMobileState extends State<_ProfileScreenMobile> {
         ),
         SizedBox(height: 10),
         Text(
-          '[email protected]',
+          'JohnDoe@example.com',
           style: TextStyle(
             fontSize: 16,
             color: Colors.grey,
@@ -77,7 +77,7 @@ class _ProfileScreenMobileState extends State<_ProfileScreenMobile> {
       appBar: PreferredSize(
         preferredSize: Size(screenSize.width, 50.0),
         child: CustomAppBar(
-          isSearch: true,
+          isProfile: true,
         ),
       ),
       body: Container(
@@ -102,6 +102,54 @@ class _ProfileScreenDesktop extends StatefulWidget {
 }
 
 class _ProfileScreenDesktopState extends State<_ProfileScreenDesktop> {
+  _header(BuildContext context) {
+    return Column(
+      children: [
+        CircleAvatar(
+          radius: 50,
+          backgroundImage: NetworkImage(
+              'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'),
+        ),
+        SizedBox(height: 10),
+        Text(
+          'John Doe',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(height: 10),
+        Text(
+          'JohnDoe@example.com',
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.grey,
+          ),
+        ),
+      ],
+    );
+  }
+
+  _logout(BuildContext context) {
+    return Column(
+      children: [
+        Divider(),
+        ListTile(
+          leading: Icon(Icons.logout),
+          title: Text('Logout'),
+          onTap: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LoginPage(),
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -109,10 +157,19 @@ class _ProfileScreenDesktopState extends State<_ProfileScreenDesktop> {
       appBar: PreferredSize(
         preferredSize: Size(screenSize.width, 50.0),
         child: CustomAppBar(
-          isSearch: true,
+          isProfile: true,
         ),
       ),
-      body: Container(),
+      body: Container(
+        margin: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _header(context),
+            _logout(context),
+          ],
+        ),
+      ),
     );
   }
 }
