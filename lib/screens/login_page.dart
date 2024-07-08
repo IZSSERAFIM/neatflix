@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:neatflix/screens/screens.dart';
+import 'package:neatflix/utils/get_content.dart';
+import 'package:neatflix/utils/utils.dart'; // Import the utils file
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -23,7 +25,6 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             _header(context),
             _inputField(context),
-            _forgotPassword(context),
             _signup(context),
           ],
         ),
@@ -97,13 +98,14 @@ class _LoginPageState extends State<LoginPage> {
           ElevatedButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
-                print("username: $username, password: $password");
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => NavScreen(),
-                  ),
-                );
+                login(context, username, password);
+                // getContents(context);
+                // Navigator.pushReplacement(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => NavScreen(),
+                //   ),
+                // );
               }
             },
             style: ElevatedButton.styleFrom(
@@ -120,16 +122,6 @@ class _LoginPageState extends State<LoginPage> {
             ),
           )
         ],
-      ),
-    );
-  }
-
-  _forgotPassword(context) {
-    return TextButton(
-      onPressed: () {},
-      child: const Text(
-        "Forgot password?",
-        style: TextStyle(color: Colors.purple),
       ),
     );
   }

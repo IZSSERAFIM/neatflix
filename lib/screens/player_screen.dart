@@ -41,33 +41,35 @@ class _PlayerScreenMobileState extends State<_PlayerScreenMobile> {
           isPlayer: true,
         ),
       ),
-      body: Column(
-        children: [
-          HeaderPlayer(VideoUrl: widget.content.videoUrl!),
-          const SizedBox(height: 12.0),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: VideoDescription(
-              title: widget.content.name,
-              description: widget.content.description!,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            HeaderPlayer(VideoUrl: widget.content.videoUrl!),
+            const SizedBox(height: 12.0),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: VideoDescription(
+                title: widget.content.name,
+                description: widget.content.description!,
+              ),
             ),
-          ),
-          const SizedBox(height: 12.0),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: NeatflixRatingBar(),
-          ),
-          const SizedBox(height: 10.0),
-          VerticalIconButton(
-            icon: Icons.add,
-            title: 'List',
-            onTap: () {},
-          ),
-          const SizedBox(height: 12.0),
-          Expanded(
-            child: Padding(
+            const SizedBox(height: 12.0),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: NeatflixRatingBar(),
+            ),
+            const SizedBox(height: 10.0),
+            VerticalIconButton(
+              icon: Icons.add,
+              title: 'List',
+              onTap: () {},
+            ),
+            const SizedBox(height: 12.0),
+            Padding(
               padding: const EdgeInsets.all(8.0),
               child: CustomScrollView(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
                 slivers: [
                   SliverPadding(
                     padding: const EdgeInsets.only(bottom: 20.0),
@@ -83,8 +85,8 @@ class _PlayerScreenMobileState extends State<_PlayerScreenMobile> {
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
