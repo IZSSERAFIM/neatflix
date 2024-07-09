@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:neatflix/screens/screens.dart';
 import 'package:neatflix/widgets/widgets.dart';
+import 'package:neatflix/user/user.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -39,12 +40,19 @@ class _ProfileScreenMobileState extends State<_ProfileScreenMobile> {
           ),
         ),
         SizedBox(height: 10),
-        Text(
-          'JohnDoe@example.com',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.grey,
-          ),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.email, color: Colors.grey),
+            SizedBox(width: 8), // Provides spacing between the icon and text
+            Text(
+              'JohnDoe@example.com',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey,
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -119,12 +127,19 @@ class _ProfileScreenDesktopState extends State<_ProfileScreenDesktop> {
           ),
         ),
         SizedBox(height: 10),
-        Text(
-          'JohnDoe@example.com',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.grey,
-          ),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.email, color: Colors.grey),
+            SizedBox(width: 8), // Provides spacing between the icon and text
+            Text(
+              'JohnDoe@example.com',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey,
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -146,6 +161,7 @@ class _ProfileScreenDesktopState extends State<_ProfileScreenDesktop> {
               leading: Icon(Icons.logout),
               title: Text('Logout'),
               onTap: () {
+                token = {};
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(

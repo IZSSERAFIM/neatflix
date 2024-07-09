@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:neatflix/screens/screens.dart';
 import 'package:neatflix/utils/utils.dart';
+import 'package:neatflix/user/user.dart';
 
 Future<void> login(
     BuildContext context, String username, String password) async {
@@ -17,6 +18,7 @@ Future<void> login(
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       print("Login successful: $data");
+      token = data;
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(

@@ -16,15 +16,13 @@ Future<void> signup(BuildContext context, String username, String email,
     );
 
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      print("Signup successful: $data");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Signup successful')),
       );
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => NavScreen(),
+          builder: (context) => LoginPage(),
         ),
       );
     } else {
