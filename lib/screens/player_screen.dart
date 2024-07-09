@@ -3,6 +3,7 @@ import 'package:neatflix/models/models.dart';
 import 'package:neatflix/widgets/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:neatflix/data/data.dart';
+import 'package:neatflix/utils/utils.dart';
 
 class PlayerScreen extends StatelessWidget {
   const PlayerScreen({Key? key, required this.content}) : super(key: key);
@@ -31,6 +32,15 @@ class _PlayerScreenMobile extends StatefulWidget {
 }
 
 class _PlayerScreenMobileState extends State<_PlayerScreenMobile> {
+  late Future<List<dynamic>> _combinedFutures;
+  @override
+  void initState() {
+    super.initState();
+    _combinedFutures = Future.wait([
+      getTrending(),
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -41,52 +51,68 @@ class _PlayerScreenMobileState extends State<_PlayerScreenMobile> {
           isPlayer: true,
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            HeaderPlayer(VideoUrl: widget.content.videoUrl!),
-            const SizedBox(height: 12.0),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: VideoDescription(
-                title: widget.content.name,
-                description: widget.content.description!,
-              ),
-            ),
-            const SizedBox(height: 12.0),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: NeatflixRatingBar(),
-            ),
-            const SizedBox(height: 10.0),
-            VerticalIconButton(
-              icon: Icons.add,
-              title: 'List',
-              onTap: () {},
-            ),
-            const SizedBox(height: 12.0),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CustomScrollView(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                slivers: [
-                  SliverPadding(
-                    padding: const EdgeInsets.only(bottom: 20.0),
-                    sliver: SliverToBoxAdapter(
-                      child: ContentList(
-                        key: PageStorageKey('trending'),
-                        title: 'Trending',
-                        contentList: trending,
-                        isOriginals: false,
-                      ),
+      body: FutureBuilder<List<dynamic>>(
+        future: _combinedFutures,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.hasData) {
+            var combinedData = snapshot.data!;
+            var trendingContent =
+                List<Content>.from(combinedData[0] as List<dynamic>);
+
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  HeaderPlayer(VideoUrl: widget.content.videoUrl!),
+                  const SizedBox(height: 12.0),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: VideoDescription(
+                      title: widget.content.name,
+                      description: widget.content.description!,
+                    ),
+                  ),
+                  const SizedBox(height: 12.0),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: NeatflixRatingBar(),
+                  ),
+                  const SizedBox(height: 10.0),
+                  VerticalIconButton(
+                    icon: Icons.add,
+                    title: 'List',
+                    onTap: () {},
+                  ),
+                  const SizedBox(height: 12.0),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CustomScrollView(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      slivers: [
+                        SliverPadding(
+                          padding: const EdgeInsets.only(bottom: 20.0),
+                          sliver: SliverToBoxAdapter(
+                            child: ContentList(
+                              key: PageStorageKey('trending'),
+                              title: 'Trending',
+                              contentList: trendingContent,
+                              isOriginals: false,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-            ),
-          ],
-        ),
+            );
+          }
+          return Container(); // Fallback for unexpected state
+        },
       ),
     );
   }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:neatflix/models/models.dart';
+import 'package:neatflix/utils/URL.dart';
+import 'package:neatflix/screens/screens.dart';
 
 class Previews extends StatelessWidget {
   const Previews({
@@ -37,7 +39,15 @@ class Previews extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) {
               final Content content = contentList[index] as Content;
               return GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          PlayerScreen(content: contentList[index] as Content),
+                    ),
+                  );
+                },
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
@@ -47,7 +57,7 @@ class Previews extends StatelessWidget {
                       width: 130.0,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage(content.imageUrl),
+                          image: NetworkImage('$baseURL/${content.imageUrl}'),
                           fit: BoxFit.cover,
                         ),
                         shape: BoxShape.circle,
@@ -84,7 +94,8 @@ class Previews extends StatelessWidget {
                       bottom: 0,
                       child: SizedBox(
                         height: 60.0,
-                        child: Image.asset(content.titleImageUrl!),
+                        child:
+                            Image.network('$baseURL/${content.titleImageUrl}'),
                       ),
                     ),
                   ],

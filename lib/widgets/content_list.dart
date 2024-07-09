@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:neatflix/models/models.dart';
+import 'package:neatflix/utils/URL.dart';
+import 'package:neatflix/screens/screens.dart';
 
 class ContentList extends StatelessWidget {
   final String title;
@@ -50,14 +52,22 @@ class ContentList extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) {
               final Content content = contentList[index];
               return GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          PlayerScreen(content: contentList[index] as Content),
+                    ),
+                  );
+                },
                 child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 8.0),
                   height: isOriginals ? 400.0 : 200.0,
                   width: isOriginals ? 200.0 : 130.0,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage(content.imageUrl),
+                      image: NetworkImage('$baseURL/${content.imageUrl}'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -87,7 +97,7 @@ class ContentList extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 700,
+            height: 500,
             child: PageView.builder(
               itemCount: contentList.length,
               controller: PageController(viewportFraction: 0.7),
@@ -103,7 +113,7 @@ class ContentList extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15.0),
                       image: DecorationImage(
-                        image: AssetImage(content.imageUrl),
+                        image: NetworkImage('$baseURL/${content.imageUrl}'),
                         fit: BoxFit.cover,
                       ),
                     ),

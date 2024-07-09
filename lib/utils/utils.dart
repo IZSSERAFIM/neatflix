@@ -1,5 +1,9 @@
 export 'URL.dart';
 export 'login.dart';
 export 'signup.dart';
-export 'get_content.dart';
+export 'get_headerContent.dart';
 export 'get_user_info.dart';
+export 'get_previews.dart';
+export 'get_user_playlist.dart';
+export 'get_trending.dart';
+export 'get_originals.dart';

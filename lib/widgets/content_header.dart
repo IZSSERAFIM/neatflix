@@ -3,6 +3,7 @@ import 'package:neatflix/models/content_model.dart';
 import 'package:neatflix/widgets/widgets.dart';
 import 'package:video_player/video_player.dart';
 import 'package:neatflix/screens/screens.dart';
+import 'package:neatflix/utils/utils.dart';
 
 class ContentHeader extends StatelessWidget {
   const ContentHeader({
@@ -81,8 +82,8 @@ class _ContentHeaderMobileState extends State<_ContentHeaderMobile> {
                   : 1,
               child: isPlaying
                   ? VideoPlayer(_videoController)
-                  : Image.asset(
-                      widget.featuredContent.imageUrl,
+                  : Image.network(
+                      '$baseURL/${widget.featuredContent.imageUrl}',
                       fit: BoxFit.cover,
                     ),
             );
@@ -111,7 +112,8 @@ class _ContentHeaderMobileState extends State<_ContentHeaderMobile> {
           bottom: 110.0,
           child: SizedBox(
             width: 250.0,
-            child: Image.asset(widget.featuredContent.titleImageUrl!),
+            child: Image.network(
+                '$baseURL/${widget.featuredContent.titleImageUrl}'),
           ),
         ),
         Positioned(
@@ -216,8 +218,8 @@ class _ContentHeaderDesktopState extends State<_ContentHeaderDesktop> {
                 : 2.344,
             child: _videoController.value.isInitialized
                 ? VideoPlayer(_videoController)
-                : Image.asset(
-                    widget.featuredContent.imageUrl,
+                : Image.network(
+                    '$baseURL/${widget.featuredContent.imageUrl}',
                     fit: BoxFit.cover,
                   ),
           ),
@@ -250,11 +252,12 @@ class _ContentHeaderDesktopState extends State<_ContentHeaderDesktop> {
               children: [
                 SizedBox(
                   width: 250.0,
-                  child: Image.asset(widget.featuredContent.titleImageUrl!),
+                  child: Image.network(
+                      '$baseURL/${widget.featuredContent.titleImageUrl}'),
                 ),
                 const SizedBox(height: 15.0),
                 Text(
-                  widget.featuredContent.description!,
+                  widget.featuredContent.description!.replaceAll(r'\n', '\n'),
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 18.0,

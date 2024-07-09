@@ -5,31 +5,28 @@ import 'package:neatflix/user/user_info.dart';
 import 'package:neatflix/utils/utils.dart';
 import 'package:neatflix/user/user.dart';
 
-Future<void> getUserInfo(BuildContext context) async {
-  final url = Uri.parse("$baseURL/api/auth/user");
+Future<void> getUserInfo() async {
+  final url = Uri.parse("$baseURL/api/auth/userInfo");
   try {
     final response = await http.get(
       url,
-      headers: token,
+      headers: {
+        'Authorization': 'Bearer ${token}',
+        "Content-Type": "application/json"
+      },
     );
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       print("User info: $data");
-      userName = data['username'];
-      userEmail = data['email'];
-      userAvatar = data['avatar'];
+      userName = data['userName'];
+      userEmail = data['userEmail'];
+      userAvatar = data['userAvatar'];
     } else {
       print("Failed to get user info: ${response.body}");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to get user info')),
-      );
     }
   } catch (e, stacktrace) {
     print('Error: $e');
     print('Stacktrace: $stacktrace');
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('An error occurred')),
-    );
   }
 }

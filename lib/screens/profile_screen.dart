@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:neatflix/screens/screens.dart';
+import 'package:neatflix/user/user_info.dart';
 import 'package:neatflix/widgets/widgets.dart';
 import 'package:neatflix/user/user.dart';
+import 'package:neatflix/utils/utils.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -23,59 +25,13 @@ class _ProfileScreenMobile extends StatefulWidget {
 }
 
 class _ProfileScreenMobileState extends State<_ProfileScreenMobile> {
-  _header(BuildContext context) {
-    return Column(
-      children: [
-        CircleAvatar(
-          radius: 50,
-          backgroundImage: NetworkImage(
-              'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'),
-        ),
-        SizedBox(height: 10),
-        Text(
-          'John Doe',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        SizedBox(height: 10),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.email, color: Colors.grey),
-            SizedBox(width: 8), // Provides spacing between the icon and text
-            Text(
-              'JohnDoe@example.com',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  _logout(BuildContext context) {
-    return Column(
-      children: [
-        Divider(),
-        ListTile(
-          leading: Icon(Icons.logout),
-          title: Text('Logout'),
-          onTap: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => LoginPage(),
-              ),
-            );
-          },
-        ),
-      ],
-    );
+  late Future<List<dynamic>> _combinedFutures;
+  @override
+  void initState() {
+    super.initState();
+    _combinedFutures = Future.wait([
+      getUserInfo(),
+    ]);
   }
 
   @override
@@ -88,15 +44,77 @@ class _ProfileScreenMobileState extends State<_ProfileScreenMobile> {
           isProfile: true,
         ),
       ),
-      body: Container(
-        margin: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            _header(context),
-            _logout(context),
-          ],
-        ),
+      body: FutureBuilder<List<dynamic>>(
+        future: _combinedFutures,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.hasData) {
+            var combinedData = snapshot.data!;
+            var userData = combinedData[0];
+
+            return Container(
+              margin: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    children: [
+                      CircleAvatar(
+                        radius: 50,
+                        backgroundImage: NetworkImage(userAvatar),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        userName,
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.email, color: Colors.grey),
+                          SizedBox(width: 8),
+                          Text(
+                            userEmail,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Divider(),
+                      ListTile(
+                        leading: Icon(Icons.logout),
+                        title: Text('Logout'),
+                        onTap: () {
+                          token = userEmail = userName = userAvatar = "";
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginPage(),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          }
+          return Container(); // Fallback for unexpected state
+        },
       ),
     );
   }
@@ -110,17 +128,25 @@ class _ProfileScreenDesktop extends StatefulWidget {
 }
 
 class _ProfileScreenDesktopState extends State<_ProfileScreenDesktop> {
+  late Future<List<dynamic>> _combinedFutures;
+  @override
+  void initState() {
+    super.initState();
+    _combinedFutures = Future.wait([
+      getUserInfo(),
+    ]);
+  }
+
   _header(BuildContext context) {
     return Column(
       children: [
         CircleAvatar(
           radius: 50,
-          backgroundImage: NetworkImage(
-              'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg'),
+          backgroundImage: NetworkImage(userAvatar),
         ),
         SizedBox(height: 10),
         Text(
-          'John Doe',
+          userName,
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -133,7 +159,7 @@ class _ProfileScreenDesktopState extends State<_ProfileScreenDesktop> {
             Icon(Icons.email, color: Colors.grey),
             SizedBox(width: 8), // Provides spacing between the icon and text
             Text(
-              'JohnDoe@example.com',
+              userEmail,
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.grey,
@@ -161,7 +187,7 @@ class _ProfileScreenDesktopState extends State<_ProfileScreenDesktop> {
               leading: Icon(Icons.logout),
               title: Text('Logout'),
               onTap: () {
-                token = {};
+                token = userEmail = userName = userAvatar = "";
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
@@ -186,15 +212,87 @@ class _ProfileScreenDesktopState extends State<_ProfileScreenDesktop> {
           isProfile: true,
         ),
       ),
-      body: Container(
-        margin: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            _header(context),
-            _logout(context),
-          ],
-        ),
+      body: FutureBuilder<List<dynamic>>(
+        future: _combinedFutures,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.hasData) {
+            var combinedData = snapshot.data!;
+            var userData = combinedData[0];
+
+            return Container(
+              margin: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    children: [
+                      CircleAvatar(
+                        radius: 50,
+                        backgroundImage: NetworkImage(userAvatar),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        userName,
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.email, color: Colors.grey),
+                          SizedBox(width: 8),
+                          Text(
+                            userEmail,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Center(
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          child: Divider(),
+                        ),
+                      ),
+                      Center(
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          child: ListTile(
+                            leading: Icon(Icons.logout),
+                            title: Text('Logout'),
+                            onTap: () {
+                              token = userEmail = userName = userAvatar = "";
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LoginPage(),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          }
+          return Container(); // Fallback for unexpected state
+        },
       ),
     );
   }

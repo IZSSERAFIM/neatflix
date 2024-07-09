@@ -18,7 +18,7 @@ Future<void> login(
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       print("Login successful: $data");
-      token = data;
+      token = data['accessToken'];
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(

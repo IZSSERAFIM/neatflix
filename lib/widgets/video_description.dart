@@ -53,7 +53,7 @@ class _VideoDescriptionMobileState extends State<_VideoDescriptionMobile> {
           ),
           const SizedBox(height: 12.0),
           Text(
-            widget.description,
+            widget.description.replaceAll(r'\n', '\n'),
             style: const TextStyle(
               color: Colors.white,
               fontSize: 16.0,
