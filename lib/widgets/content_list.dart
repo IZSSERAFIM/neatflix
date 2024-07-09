@@ -71,47 +71,49 @@ class ContentList extends StatelessWidget {
   }
 
   Widget _buildVerticalContent() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: Text(
-            title,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Text(
+              title,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-        ),
-        SizedBox(
-          height: 700,
-          child: PageView.builder(
-            itemCount: contentList.length,
-            controller: PageController(viewportFraction: 0.7),
-            itemBuilder: (context, index) {
-              Content content = contentList[index];
-              return GestureDetector(
-                onTap: () {},
-                child: Container(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 10.0,
-                    vertical: 8.0,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15.0),
-                    image: DecorationImage(
-                      image: AssetImage(content.imageUrl),
-                      fit: BoxFit.cover,
+          SizedBox(
+            height: 700,
+            child: PageView.builder(
+              itemCount: contentList.length,
+              controller: PageController(viewportFraction: 0.7),
+              itemBuilder: (context, index) {
+                Content content = contentList[index];
+                return GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 10.0,
+                      vertical: 8.0,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15.0),
+                      image: DecorationImage(
+                        image: AssetImage(content.imageUrl),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
