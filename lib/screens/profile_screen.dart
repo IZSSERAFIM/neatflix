@@ -133,18 +133,28 @@ class _ProfileScreenDesktopState extends State<_ProfileScreenDesktop> {
   _logout(BuildContext context) {
     return Column(
       children: [
-        Divider(),
-        ListTile(
-          leading: Icon(Icons.logout),
-          title: Text('Logout'),
-          onTap: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => LoginPage(),
-              ),
-            );
-          },
+        Center(
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.3,
+            child: Divider(),
+          ),
+        ),
+        Center(
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.3,
+            child: ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('Logout'),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginPage(),
+                  ),
+                );
+              },
+            ),
+          ),
         ),
       ],
     );
