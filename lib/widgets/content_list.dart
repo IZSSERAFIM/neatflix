@@ -104,7 +104,15 @@ class ContentList extends StatelessWidget {
               itemBuilder: (context, index) {
                 Content content = contentList[index];
                 return GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PlayerScreen(
+                            content: contentList[index] as Content),
+                      ),
+                    );
+                  },
                   child: Container(
                     margin: const EdgeInsets.symmetric(
                       horizontal: 10.0,
