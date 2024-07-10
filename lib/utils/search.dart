@@ -3,7 +3,10 @@ import 'dart:convert';
 import 'package:neatflix/models/content_model.dart';
 import 'package:neatflix/utils/utils.dart';
 
-Future<List<Content>> Search(String text) async {
+Future<List<Content>> search(String text) async {
+  if (text.isEmpty) {
+    return [];
+  }
   final url = Uri.parse("$baseURL/api/video/search");
   try {
     final response = await http.post(

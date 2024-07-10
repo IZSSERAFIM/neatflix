@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:neatflix/cubits/cubits.dart';
-import 'package:neatflix/data/data.dart';
 import 'package:neatflix/widgets/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:neatflix/utils/utils.dart';
@@ -28,7 +27,8 @@ class _SearchScreenMobile extends StatefulWidget {
 class _SearchScreenMobileState extends State<_SearchScreenMobile> {
   ScrollController _scrollcontroller = ScrollController();
   late Future<List<dynamic>> _combinedFutures;
-  List<Content> searchResults = [];
+  List<Content> searchResultsTitle = [];
+  List<Content> searchResultsCategory = [];
 
   @override
   void initState() {
@@ -49,20 +49,20 @@ class _SearchScreenMobileState extends State<_SearchScreenMobile> {
   }
 
   void onQueryChanged(String query) async {
-    if (query.isEmpty) {
-      setState(() {
-        searchResults = [];
-      });
-      return;
-    }
     try {
-      final results = await Search(query);
+      final results = await search(query);
       setState(() {
-        searchResults = results;
+        searchResultsTitle = results;
       });
     } catch (e) {
       print('Error searching: $e');
     }
+  }
+
+  void onCategorySelected(List<Content> contents) {
+    setState(() {
+      searchResultsCategory = contents;
+    });
   }
 
   @override
@@ -92,11 +92,25 @@ class _SearchScreenMobileState extends State<_SearchScreenMobile> {
             var trendingContent =
                 List<Content>.from(combinedData[0] as List<dynamic>);
 
+            // 合并并去重搜索结果
+            final searchResultsSet = {
+              ...searchResultsTitle,
+              ...searchResultsCategory
+            };
+            final uniqueSearchResults = searchResultsSet.toList();
+
             return CustomScrollView(
               controller: _scrollcontroller,
               slivers: [
                 SliverToBoxAdapter(
-                  child: NeatflixSearchBar(onQueryChanged: onQueryChanged),
+                  child: NeatflixSearchBar(
+                    onQueryChanged: onQueryChanged,
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: CategoryBar(
+                    onCategorySelected: onCategorySelected,
+                  ),
                 ),
                 SliverPadding(
                   padding: const EdgeInsets.only(bottom: 20.0),
@@ -115,7 +129,7 @@ class _SearchScreenMobileState extends State<_SearchScreenMobile> {
                     child: ContentList(
                       key: PageStorageKey('search'),
                       title: 'Search Results',
-                      contentList: searchResults,
+                      contentList: uniqueSearchResults,
                       isOriginals: true,
                     ),
                   ),
@@ -140,6 +154,8 @@ class _SearchScreenDesktop extends StatefulWidget {
 class _SearchScreenDesktopState extends State<_SearchScreenDesktop> {
   late Future<List<dynamic>> _combinedFutures;
   List<Content> searchResults = [];
+  List<Content> searchResultsTitle = [];
+  List<Content> searchResultsCategory = [];
   @override
   void initState() {
     super.initState();
@@ -149,20 +165,20 @@ class _SearchScreenDesktopState extends State<_SearchScreenDesktop> {
   }
 
   void onQueryChanged(String query) async {
-    if (query.isEmpty) {
-      setState(() {
-        searchResults = [];
-      });
-      return;
-    }
     try {
-      final results = await Search(query);
+      final results = await search(query);
       setState(() {
-        searchResults = results;
+        searchResultsTitle = results;
       });
     } catch (e) {
       print('Error searching: $e');
     }
+  }
+
+  void onCategorySelected(List<Content> contents) {
+    setState(() {
+      searchResultsCategory = contents;
+    });
   }
 
   @override
@@ -187,10 +203,24 @@ class _SearchScreenDesktopState extends State<_SearchScreenDesktop> {
             var trendingContent =
                 List<Content>.from(combinedData[0] as List<dynamic>);
 
+            // 合并并去重搜索结果
+            final searchResultsSet = {
+              ...searchResultsTitle,
+              ...searchResultsCategory
+            };
+            final uniqueSearchResults = searchResultsSet.toList();
+
             return CustomScrollView(
               slivers: [
                 SliverToBoxAdapter(
-                  child: NeatflixSearchBar(onQueryChanged: onQueryChanged),
+                  child: NeatflixSearchBar(
+                    onQueryChanged: onQueryChanged,
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: CategoryBar(
+                    onCategorySelected: onCategorySelected,
+                  ),
                 ),
                 SliverPadding(
                   padding: const EdgeInsets.only(bottom: 20.0),
@@ -209,7 +239,7 @@ class _SearchScreenDesktopState extends State<_SearchScreenDesktop> {
                     child: ContentList(
                       key: PageStorageKey('search'),
                       title: 'Search Results',
-                      contentList: searchResults,
+                      contentList: uniqueSearchResults,
                       isOriginals: true,
                     ),
                   ),

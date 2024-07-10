@@ -41,4 +41,31 @@ class Content {
     // 将颜色字符串解析为整数
     return Color(int.parse(colorString, radix: 16) + 0xFF000000);
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (runtimeType != other.runtimeType) return false;
+    final Content otherContent = other as Content;
+    return name == otherContent.name &&
+        imageUrl == otherContent.imageUrl &&
+        titleImageUrl == otherContent.titleImageUrl &&
+        videoUrl == otherContent.videoUrl &&
+        description == otherContent.description &&
+        color == otherContent.color &&
+        id == otherContent.id;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hash(
+      name,
+      imageUrl,
+      titleImageUrl,
+      videoUrl,
+      description,
+      color,
+      id,
+    );
+  }
 }

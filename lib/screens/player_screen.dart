@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:neatflix/models/models.dart';
 import 'package:neatflix/widgets/widgets.dart';
 import 'package:flutter/services.dart';
-import 'package:neatflix/data/data.dart';
 import 'package:neatflix/utils/utils.dart';
 
 class PlayerScreen extends StatelessWidget {

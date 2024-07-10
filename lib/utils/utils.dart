@@ -8,3 +8,4 @@ export 'get_user_playlist.dart';
 export 'get_trending.dart';
 export 'get_originals.dart';
 export 'search.dart';
+export 'category.dart';

@@ -8,3 +8,4 @@ export 'search_bar.dart';
 export 'rating_bar.dart';
 export 'video_description.dart';
 export 'header_player.dart';
+export 'category_bar.dart';
