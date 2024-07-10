@@ -2,17 +2,13 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:neatflix/models/content_model.dart';
 import 'package:neatflix/utils/utils.dart';
-import 'package:neatflix/user/user.dart';
 
-Future<List<Content>> getUserPlayList() async {
-  final url = Uri.parse("$baseURL/api/video/playlistVideos");
+Future<List<Content>> Search(String text) async {
+  final url = Uri.parse("$baseURL/api/video/search");
   try {
-    final response = await http.get(
+    final response = await http.post(
       url,
-      headers: {
-        'Authorization': 'Bearer ${token}',
-        "Content-Type": "application/json"
-      },
+      body: {"title": text},
     );
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body) as List;

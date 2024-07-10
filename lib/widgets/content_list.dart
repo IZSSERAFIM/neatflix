@@ -97,7 +97,7 @@ class ContentList extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 500,
+            height: 650,
             child: PageView.builder(
               itemCount: contentList.length,
               controller: PageController(viewportFraction: 0.7),

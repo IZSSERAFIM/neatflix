@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class NeatflixSearchBar extends StatefulWidget {
-  const NeatflixSearchBar({super.key});
+  final Function(String) onQueryChanged;
+
+  const NeatflixSearchBar({super.key, required this.onQueryChanged});
 
   @override
   State<NeatflixSearchBar> createState() => _NeatflixSearchBarState();
@@ -9,10 +11,12 @@ class NeatflixSearchBar extends StatefulWidget {
 
 class _NeatflixSearchBarState extends State<NeatflixSearchBar> {
   String query = '';
-  void onQueryChanged(String newQuery) {
+
+  void handleQueryChanged(String newQuery) {
     setState(() {
       query = newQuery;
     });
+    widget.onQueryChanged(newQuery);
   }
 
   @override
@@ -20,7 +24,7 @@ class _NeatflixSearchBarState extends State<NeatflixSearchBar> {
     return Container(
       padding: EdgeInsets.all(16),
       child: TextField(
-        onChanged: onQueryChanged,
+        onChanged: handleQueryChanged,
         style: TextStyle(color: Colors.white),
         decoration: InputDecoration(
           labelText: 'Search',

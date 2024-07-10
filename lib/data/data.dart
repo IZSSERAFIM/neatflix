@@ -114,7 +114,7 @@ import 'package:neatflix/utils/utils.dart';
 //   Content(name: 'Dogs', imageUrl: Assets.dogs),
 // ];
 
-final List<Content> searchResults = const [
-  Content(name: 'Stranger Things', imageUrl: Assets.strangerThings),
-  Content(name: 'The Witcher', imageUrl: Assets.witcher),
-];
+// final List<Content> searchResults = const [
+//   Content(name: 'Stranger Things', imageUrl: Assets.strangerThings),
+//   Content(name: 'The Witcher', imageUrl: Assets.witcher),
+// ];

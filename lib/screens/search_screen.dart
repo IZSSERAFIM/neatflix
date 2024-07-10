@@ -28,6 +28,8 @@ class _SearchScreenMobile extends StatefulWidget {
 class _SearchScreenMobileState extends State<_SearchScreenMobile> {
   ScrollController _scrollcontroller = ScrollController();
   late Future<List<dynamic>> _combinedFutures;
+  List<Content> searchResults = [];
+
   @override
   void initState() {
     _scrollcontroller = ScrollController()
@@ -44,6 +46,23 @@ class _SearchScreenMobileState extends State<_SearchScreenMobile> {
   void dispose() {
     _scrollcontroller.dispose();
     super.dispose();
+  }
+
+  void onQueryChanged(String query) async {
+    if (query.isEmpty) {
+      setState(() {
+        searchResults = [];
+      });
+      return;
+    }
+    try {
+      final results = await Search(query);
+      setState(() {
+        searchResults = results;
+      });
+    } catch (e) {
+      print('Error searching: $e');
+    }
   }
 
   @override
@@ -77,7 +96,7 @@ class _SearchScreenMobileState extends State<_SearchScreenMobile> {
               controller: _scrollcontroller,
               slivers: [
                 SliverToBoxAdapter(
-                  child: NeatflixSearchBar(),
+                  child: NeatflixSearchBar(onQueryChanged: onQueryChanged),
                 ),
                 SliverPadding(
                   padding: const EdgeInsets.only(bottom: 20.0),
@@ -120,12 +139,30 @@ class _SearchScreenDesktop extends StatefulWidget {
 
 class _SearchScreenDesktopState extends State<_SearchScreenDesktop> {
   late Future<List<dynamic>> _combinedFutures;
+  List<Content> searchResults = [];
   @override
   void initState() {
     super.initState();
     _combinedFutures = Future.wait([
       getTrending(),
     ]);
+  }
+
+  void onQueryChanged(String query) async {
+    if (query.isEmpty) {
+      setState(() {
+        searchResults = [];
+      });
+      return;
+    }
+    try {
+      final results = await Search(query);
+      setState(() {
+        searchResults = results;
+      });
+    } catch (e) {
+      print('Error searching: $e');
+    }
   }
 
   @override
@@ -153,7 +190,7 @@ class _SearchScreenDesktopState extends State<_SearchScreenDesktop> {
             return CustomScrollView(
               slivers: [
                 SliverToBoxAdapter(
-                  child: NeatflixSearchBar(),
+                  child: NeatflixSearchBar(onQueryChanged: onQueryChanged),
                 ),
                 SliverPadding(
                   padding: const EdgeInsets.only(bottom: 20.0),
