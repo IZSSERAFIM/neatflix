@@ -126,7 +126,9 @@ class _ContentHeaderMobileState extends State<_ContentHeaderMobile> {
               VerticalIconButton(
                 icon: Icons.add,
                 title: 'List',
-                onTap: () {},
+                onTap: () async {
+                  await addUserPlayList(context, widget.featuredContent.id!);
+                },
               ),
               _PlayButton(
                 onPressed: _togglePlayPause,

@@ -9,3 +9,6 @@ export 'get_trending.dart';
 export 'get_originals.dart';
 export 'search.dart';
 export 'category.dart';
+export 'add_list.dart';
+export 'delete_list.dart';
+export 'record_click.dart';

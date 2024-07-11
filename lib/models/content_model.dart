@@ -8,6 +8,7 @@ class Content {
   final String? description;
   final Color? color;
   final int? id;
+  final double? rating;
 
   const Content({
     required this.name,
@@ -17,6 +18,7 @@ class Content {
     this.description,
     this.color,
     this.id,
+    this.rating,
   });
 
   factory Content.fromJson(Map<String, dynamic> data) {

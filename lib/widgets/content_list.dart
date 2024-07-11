@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:neatflix/models/models.dart';
 import 'package:neatflix/utils/URL.dart';
 import 'package:neatflix/screens/screens.dart';
+import 'package:neatflix/utils/utils.dart';
 
 class ContentList extends StatelessWidget {
   final String title;
   final List<Content> contentList;
   final bool isOriginals;
   final bool isHorizontal;
+  final bool showDelete;
 
   const ContentList({
     Key? key,
@@ -15,6 +17,7 @@ class ContentList extends StatelessWidget {
     required this.contentList,
     this.isOriginals = false,
     this.isHorizontal = true,
+    this.showDelete = false,
   }) : super(key: key);
 
   @override
@@ -60,6 +63,33 @@ class ContentList extends StatelessWidget {
                           PlayerScreen(content: contentList[index] as Content),
                     ),
                   );
+                },
+                onLongPress: () {
+                  if (showDelete) {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text('Delete from list?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                deleteUserPlayList(context, content.id!);
+                                Navigator.pop(context);
+                              },
+                              child: const Text('Delete'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
                 },
                 child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -112,6 +142,33 @@ class ContentList extends StatelessWidget {
                             content: contentList[index] as Content),
                       ),
                     );
+                  },
+                  onLongPress: () {
+                    if (showDelete) {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('Delete from list?'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  deleteUserPlayList(context, content.id!);
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Delete'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
                   },
                   child: Container(
                     margin: const EdgeInsets.symmetric(

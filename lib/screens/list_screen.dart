@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:neatflix/cubits/cubits.dart';
 import 'package:neatflix/widgets/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:neatflix/utils/utils.dart';
 import 'package:neatflix/models/models.dart';
 
 class ListScreen extends StatelessWidget {
@@ -10,9 +9,12 @@ class ListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Responsive(
-      mobile: _ListScreenMobile(),
-      desktop: _ListScreenDesktop(),
+    return BlocProvider(
+      create: (context) => PlayListCubit()..fetchPlayList(),
+      child: Responsive(
+        mobile: _ListScreenMobile(),
+        desktop: _ListScreenDesktop(),
+      ),
     );
   }
 }
@@ -25,24 +27,20 @@ class _ListScreenMobile extends StatefulWidget {
 }
 
 class _ListScreenMobileState extends State<_ListScreenMobile> {
-  ScrollController _scrollcontroller = ScrollController();
-  late Future<List<dynamic>> _combinedFutures;
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
-    _scrollcontroller = ScrollController()
+    _scrollController = ScrollController()
       ..addListener(() {
-        context.read<AppBarCubit>().setOffset(_scrollcontroller.offset);
+        context.read<AppBarCubit>().setOffset(_scrollController.offset);
       });
     super.initState();
-    _combinedFutures = Future.wait([
-      getUserPlayList(),
-    ]);
   }
 
   @override
   void dispose() {
-    _scrollcontroller.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -61,36 +59,25 @@ class _ListScreenMobileState extends State<_ListScreenMobile> {
           },
         ),
       ),
-      body: FutureBuilder<List<dynamic>>(
-        future: _combinedFutures,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (snapshot.hasData) {
-            var combinedData = snapshot.data!;
-            var listContent =
-                List<Content>.from(combinedData[0] as List<dynamic>);
-
-            return CustomScrollView(
-              controller: _scrollcontroller,
-              slivers: [
-                SliverPadding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  sliver: SliverToBoxAdapter(
-                    child: ContentList(
-                      key: PageStorageKey('mylist'),
-                      title: 'My List',
-                      contentList: listContent,
-                      isHorizontal: false,
-                    ),
+      body: BlocBuilder<PlayListCubit, List<Content>>(
+        builder: (context, listContent) {
+          return CustomScrollView(
+            controller: _scrollController,
+            slivers: [
+              SliverPadding(
+                padding: const EdgeInsets.only(top: 20.0),
+                sliver: SliverToBoxAdapter(
+                  child: ContentList(
+                    key: PageStorageKey('mylist'),
+                    title: 'My List',
+                    contentList: listContent,
+                    isHorizontal: false,
+                    showDelete: true,
                   ),
                 ),
-              ],
-            );
-          }
-          return Container(); // Fallback for unexpected state
+              ),
+            ],
+          );
         },
       ),
     );
@@ -105,18 +92,10 @@ class _ListScreenDesktop extends StatefulWidget {
 }
 
 class _ListScreenDesktopState extends State<_ListScreenDesktop> {
-  late Future<List<dynamic>> _combinedFutures;
   @override
   void initState() {
     super.initState();
-    _combinedFutures = Future.wait([
-      getUserPlayList(),
-    ]);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
+    context.read<PlayListCubit>().fetchPlayList();
   }
 
   @override
@@ -129,36 +108,25 @@ class _ListScreenDesktopState extends State<_ListScreenDesktop> {
           isList: true,
         ),
       ),
-      body: FutureBuilder<List<dynamic>>(
-        future: _combinedFutures,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (snapshot.hasData) {
-            var combinedData = snapshot.data!;
-            var listContent =
-                List<Content>.from(combinedData[0] as List<dynamic>);
-
-            return CustomScrollView(
-              slivers: [
-                SliverPadding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  sliver: SliverToBoxAdapter(
-                    child: ContentList(
-                      key: PageStorageKey('mylist'),
-                      title: 'My List',
-                      contentList: listContent,
-                      isHorizontal: true,
-                      isOriginals: true,
-                    ),
+      body: BlocBuilder<PlayListCubit, List<Content>>(
+        builder: (context, listContent) {
+          return CustomScrollView(
+            slivers: [
+              SliverPadding(
+                padding: const EdgeInsets.only(top: 20.0),
+                sliver: SliverToBoxAdapter(
+                  child: ContentList(
+                    key: PageStorageKey('mylist'),
+                    title: 'My List',
+                    contentList: listContent,
+                    isHorizontal: true,
+                    isOriginals: true,
+                    showDelete: true,
                   ),
                 ),
-              ],
-            );
-          }
-          return Container(); // Fallback for unexpected state
+              ),
+            ],
+          );
         },
       ),
     );

@@ -38,6 +38,7 @@ class _PlayerScreenMobileState extends State<_PlayerScreenMobile> {
     _combinedFutures = Future.wait([
       getTrending(),
     ]);
+    recordClick(widget.content.id!);
   }
 
   @override
@@ -83,7 +84,9 @@ class _PlayerScreenMobileState extends State<_PlayerScreenMobile> {
                   VerticalIconButton(
                     icon: Icons.add,
                     title: 'List',
-                    onTap: () {},
+                    onTap: () async {
+                      await addUserPlayList(context, widget.content.id!);
+                    },
                   ),
                   const SizedBox(height: 12.0),
                   Padding(
@@ -127,6 +130,12 @@ class _PlayerScreenDesktop extends StatefulWidget {
 
 class _PlayerScreenDesktopState extends State<_PlayerScreenDesktop> {
   @override
+  void initState() {
+    recordClick(widget.content.id!);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
@@ -167,7 +176,9 @@ class _PlayerScreenDesktopState extends State<_PlayerScreenDesktop> {
                       child: VerticalIconButton(
                         icon: Icons.add,
                         title: 'List',
-                        onTap: () {},
+                        onTap: () async {
+                          await addUserPlayList(context, widget.content.id!);
+                        },
                       ),
                     ),
                     Padding(
