@@ -44,6 +44,10 @@ class _ListScreenMobileState extends State<_ListScreenMobile> {
     super.dispose();
   }
 
+  void _onDelete(Content content) {
+    context.read<PlayListCubit>().removeFromPlayList(content);
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -73,6 +77,7 @@ class _ListScreenMobileState extends State<_ListScreenMobile> {
                     contentList: listContent,
                     isHorizontal: false,
                     showDelete: true,
+                    onDelete: _onDelete, // 传递回调函数
                   ),
                 ),
               ),
@@ -96,6 +101,10 @@ class _ListScreenDesktopState extends State<_ListScreenDesktop> {
   void initState() {
     super.initState();
     context.read<PlayListCubit>().fetchPlayList();
+  }
+
+  void _onDelete(Content content) {
+    context.read<PlayListCubit>().removeFromPlayList(content);
   }
 
   @override
@@ -122,6 +131,7 @@ class _ListScreenDesktopState extends State<_ListScreenDesktop> {
                     isHorizontal: true,
                     isOriginals: true,
                     showDelete: true,
+                    onDelete: _onDelete, // 传递回调函数
                   ),
                 ),
               ),

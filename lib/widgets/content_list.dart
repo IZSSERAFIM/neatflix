@@ -10,6 +10,7 @@ class ContentList extends StatelessWidget {
   final bool isOriginals;
   final bool isHorizontal;
   final bool showDelete;
+  final Function(Content)? onDelete;
 
   const ContentList({
     Key? key,
@@ -18,6 +19,7 @@ class ContentList extends StatelessWidget {
     this.isOriginals = false,
     this.isHorizontal = true,
     this.showDelete = false,
+    this.onDelete,
   }) : super(key: key);
 
   @override
@@ -80,6 +82,9 @@ class ContentList extends StatelessWidget {
                             ),
                             TextButton(
                               onPressed: () {
+                                if (onDelete != null) {
+                                  onDelete!(content);
+                                }
                                 deleteUserPlayList(context, content.id!);
                                 Navigator.pop(context);
                               },
@@ -159,6 +164,9 @@ class ContentList extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: () {
+                                  if (onDelete != null) {
+                                    onDelete!(content);
+                                  }
                                   deleteUserPlayList(context, content.id!);
                                   Navigator.pop(context);
                                 },
