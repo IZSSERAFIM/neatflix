@@ -12,3 +12,5 @@ export 'category.dart';
 export 'add_list.dart';
 export 'delete_list.dart';
 export 'record_click.dart';
+export 'update_profile.dart';
+export 'rate_video.dart';

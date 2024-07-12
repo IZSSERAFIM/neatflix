@@ -30,6 +30,7 @@ class Content {
       description: data['description'],
       color: _parseColor(data['color']),
       id: data['id'],
+      rating: data['rating'],
     );
   }
 
@@ -55,7 +56,8 @@ class Content {
         videoUrl == otherContent.videoUrl &&
         description == otherContent.description &&
         color == otherContent.color &&
-        id == otherContent.id;
+        id == otherContent.id &&
+        rating == otherContent.rating;
   }
 
   @override
@@ -68,6 +70,7 @@ class Content {
       description,
       color,
       id,
+      rating,
     );
   }
 }

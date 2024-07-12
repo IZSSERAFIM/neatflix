@@ -34,6 +34,62 @@ class _ProfileScreenMobileState extends State<_ProfileScreenMobile> {
     ]);
   }
 
+  void _showEditDialog(BuildContext context) {
+    final _nameController = TextEditingController(text: userName);
+    final _emailController = TextEditingController(text: userEmail);
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Edit Profile'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: _nameController,
+                decoration: InputDecoration(
+                  labelText: 'Name',
+                  icon: Icon(Icons.person),
+                ),
+              ),
+              TextField(
+                controller: _emailController,
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  icon: Icon(Icons.email),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                await updateUserInfo(
+                  context,
+                  newName: _nameController.text,
+                  newEmail: _emailController.text,
+                );
+                setState(() {
+                  userName = _nameController.text;
+                  userEmail = _emailController.text;
+                });
+                Navigator.of(context).pop();
+              },
+              child: Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -95,6 +151,11 @@ class _ProfileScreenMobileState extends State<_ProfileScreenMobile> {
                     children: [
                       Divider(),
                       ListTile(
+                        leading: Icon(Icons.edit),
+                        title: Text('Edit Profile'),
+                        onTap: () => _showEditDialog(context),
+                      ),
+                      ListTile(
                         leading: Icon(Icons.logout),
                         title: Text('Logout'),
                         onTap: () {
@@ -137,68 +198,59 @@ class _ProfileScreenDesktopState extends State<_ProfileScreenDesktop> {
     ]);
   }
 
-  _header(BuildContext context) {
-    return Column(
-      children: [
-        CircleAvatar(
-          radius: 50,
-          backgroundImage: NetworkImage(userAvatar),
-        ),
-        SizedBox(height: 10),
-        Text(
-          userName,
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        SizedBox(height: 10),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.email, color: Colors.grey),
-            SizedBox(width: 8), // Provides spacing between the icon and text
-            Text(
-              userEmail,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
+  void _showEditDialog(BuildContext context) {
+    final _nameController = TextEditingController(text: userName);
+    final _emailController = TextEditingController(text: userEmail);
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Edit Profile'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: _nameController,
+                decoration: InputDecoration(
+                  labelText: 'Name',
+                  icon: Icon(Icons.person),
+                ),
               ),
+              TextField(
+                controller: _emailController,
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  icon: Icon(Icons.email),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                await updateUserInfo(
+                  context,
+                  newName: _nameController.text,
+                  newEmail: _emailController.text,
+                );
+                setState(() {
+                  userName = _nameController.text;
+                  userEmail = _emailController.text;
+                });
+                Navigator.of(context).pop();
+              },
+              child: Text('Save'),
             ),
           ],
-        ),
-      ],
-    );
-  }
-
-  _logout(BuildContext context) {
-    return Column(
-      children: [
-        Center(
-          child: Container(
-            width: MediaQuery.of(context).size.width * 0.3,
-            child: Divider(),
-          ),
-        ),
-        Center(
-          child: Container(
-            width: MediaQuery.of(context).size.width * 0.3,
-            child: ListTile(
-              leading: Icon(Icons.logout),
-              title: Text('Logout'),
-              onTap: () {
-                token = userEmail = userName = userAvatar = "";
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LoginPage(),
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
-      ],
+        );
+      },
     );
   }
 
@@ -265,6 +317,16 @@ class _ProfileScreenDesktopState extends State<_ProfileScreenDesktop> {
                         child: Container(
                           width: MediaQuery.of(context).size.width * 0.3,
                           child: Divider(),
+                        ),
+                      ),
+                      Center(
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          child: ListTile(
+                            leading: Icon(Icons.edit),
+                            title: Text('Edit Profile'),
+                            onTap: () => _showEditDialog(context),
+                          ),
                         ),
                       ),
                       Center(

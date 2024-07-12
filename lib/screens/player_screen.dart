@@ -3,6 +3,8 @@ import 'package:neatflix/models/models.dart';
 import 'package:neatflix/widgets/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:neatflix/utils/utils.dart';
+import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PlayerScreen extends StatelessWidget {
   const PlayerScreen({Key? key, required this.content}) : super(key: key);
@@ -78,7 +80,18 @@ class _PlayerScreenMobileState extends State<_PlayerScreenMobile> {
                   const SizedBox(height: 12.0),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: NeatflixRatingBar(),
+                    child: Text(
+                      'Video Rating: ${widget.content.rating?.toStringAsFixed(1)}/5.0',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: NeatflixRatingBar(videoId: widget.content.id!),
                   ),
                   const SizedBox(height: 10.0),
                   VerticalIconButton(
@@ -164,7 +177,18 @@ class _PlayerScreenDesktopState extends State<_PlayerScreenDesktop> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: NeatflixRatingBar(),
+                      child: Text(
+                        'Video Rating: ${widget.content.rating?.toStringAsFixed(1)}/5.0',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: NeatflixRatingBar(videoId: widget.content.id!),
                     ),
                   ],
                 ),
@@ -186,7 +210,13 @@ class _PlayerScreenDesktopState extends State<_PlayerScreenDesktop> {
                       child: VerticalIconButton(
                         icon: Icons.share,
                         title: 'Share',
-                        onTap: () {},
+                        onTap: () async {
+                          await Clipboard.setData(
+                              ClipboardData(text: widget.content.videoUrl!));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Copied to clipboard')),
+                          );
+                        },
                       ),
                     ),
                     Padding(
@@ -194,7 +224,14 @@ class _PlayerScreenDesktopState extends State<_PlayerScreenDesktop> {
                       child: VerticalIconButton(
                         icon: Icons.download,
                         title: 'Download',
-                        onTap: () {},
+                        onTap: () async {
+                          final Uri url = Uri.parse(widget.content.videoUrl!);
+                          if (await canLaunchUrl(url)) {
+                            await launchUrl(url);
+                          } else {
+                            throw 'Could not launch $url';
+                          }
+                        },
                       ),
                     ),
                   ],

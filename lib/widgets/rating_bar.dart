@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:neatflix/utils/utils.dart';
 
 class NeatflixRatingBar extends StatefulWidget {
-  const NeatflixRatingBar({super.key});
+  const NeatflixRatingBar({Key? key, required this.videoId}) : super(key: key);
+  final int videoId;
 
   @override
   State<NeatflixRatingBar> createState() => _NeatflixRatingBarState();
@@ -33,8 +35,8 @@ class _NeatflixRatingBarState extends State<NeatflixRatingBar> {
             Icons.star,
             color: Colors.amber,
           ),
-          onRatingUpdate: (rating) {
-            print(rating);
+          onRatingUpdate: (rating) async {
+            await rateVideo(widget.videoId, rating);
           },
         ),
       ],
