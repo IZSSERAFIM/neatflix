@@ -311,7 +311,7 @@ class _SignupPageDesktopState extends State<_SignupPageDesktop> {
                   children: <Widget>[
                     Center(
                       child: Container(
-                        width: MediaQuery.of(context).size.width * 0.3,
+                        width: MediaQuery.of(context).size.width / 3,
                         child: TextFormField(
                           decoration: InputDecoration(
                             hintText: "Username",
@@ -338,7 +338,7 @@ class _SignupPageDesktopState extends State<_SignupPageDesktop> {
                     const SizedBox(height: 30),
                     Center(
                       child: Container(
-                        width: MediaQuery.of(context).size.width * 0.3,
+                        width: MediaQuery.of(context).size.width / 3,
                         child: TextFormField(
                           decoration: InputDecoration(
                             hintText: "Email",
@@ -375,7 +375,7 @@ class _SignupPageDesktopState extends State<_SignupPageDesktop> {
                     const SizedBox(height: 30),
                     Center(
                       child: Container(
-                        width: MediaQuery.of(context).size.width * 0.3,
+                        width: MediaQuery.of(context).size.width / 3,
                         child: TextFormField(
                           decoration: InputDecoration(
                             hintText: "Password",
@@ -403,7 +403,7 @@ class _SignupPageDesktopState extends State<_SignupPageDesktop> {
                     const SizedBox(height: 30),
                     Center(
                       child: Container(
-                        width: MediaQuery.of(context).size.width * 0.3,
+                        width: MediaQuery.of(context).size.width / 3,
                         child: TextFormField(
                           decoration: InputDecoration(
                             hintText: "Confirm Password",
@@ -432,7 +432,7 @@ class _SignupPageDesktopState extends State<_SignupPageDesktop> {
                 ),
                 Center(
                   child: Container(
-                    width: MediaQuery.of(context).size.width * 0.3,
+                    width: MediaQuery.of(context).size.width / 3,
                     padding: const EdgeInsets.only(top: 3, left: 3),
                     child: ElevatedButton(
                       onPressed: () {

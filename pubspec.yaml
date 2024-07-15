@@ -40,7 +40,6 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   chewie: ^1.8.1
   http: any
-  url_launcher: ^6.3.0
 
 dev_dependencies:
   flutter_test:

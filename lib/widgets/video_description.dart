@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:neatflix/utils/URL.dart';
 import 'package:neatflix/widgets/widgets.dart';
-import 'package:neatflix/data/data.dart';
 
 class VideoDescription extends StatelessWidget {
   const VideoDescription({
     Key? key,
-    required this.title,
-    required this.description,
+    this.title,
+    this.description,
+    this.titleImageUrl,
   }) : super(key: key);
-  final String title;
-  final String description;
+  final String? title;
+  final String? description;
+  final String? titleImageUrl;
+
   @override
   Widget build(BuildContext context) {
     return Responsive(
       mobile: _VideoDescriptionMobile(
-        title: title,
-        description: description,
+        title: title ?? '',
+        description: description ?? '',
       ),
-      desktop: _VideoDescriptionMobile(
-        title: title,
-        description: description,
+      desktop: _VideoDescriptionDesktop(
+        titleImageUrl: titleImageUrl ?? '',
       ),
     );
   }
@@ -31,6 +33,7 @@ class _VideoDescriptionMobile extends StatefulWidget {
       : super(key: key);
   final String title;
   final String description;
+
   @override
   State<_VideoDescriptionMobile> createState() =>
       _VideoDescriptionMobileState();
@@ -53,10 +56,11 @@ class _VideoDescriptionMobileState extends State<_VideoDescriptionMobile> {
           ),
           const SizedBox(height: 12.0),
           Text(
-            widget.description.replaceAll(r'\n', '\n'),
+            widget.description,
             style: const TextStyle(
               color: Colors.white,
               fontSize: 16.0,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ],
@@ -66,11 +70,10 @@ class _VideoDescriptionMobileState extends State<_VideoDescriptionMobile> {
 }
 
 class _VideoDescriptionDesktop extends StatefulWidget {
-  const _VideoDescriptionDesktop(
-      {Key? key, required this.title, required this.description})
+  const _VideoDescriptionDesktop({Key? key, required this.titleImageUrl})
       : super(key: key);
-  final String title;
-  final String description;
+  final String titleImageUrl;
+
   @override
   State<_VideoDescriptionDesktop> createState() =>
       _VideoDescriptionDesktopState();
@@ -79,31 +82,9 @@ class _VideoDescriptionDesktop extends StatefulWidget {
 class _VideoDescriptionDesktopState extends State<_VideoDescriptionDesktop> {
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              widget.title,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 16.0),
-            Text(
-              widget.description,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 20.0,
-              ),
-            ),
-          ],
-        ),
-      ),
+    return Container(
+      width: MediaQuery.of(context).size.width / 7,
+      child: Image.network('$baseURL/${widget.titleImageUrl}'),
     );
   }
 }

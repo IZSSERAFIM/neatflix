@@ -9,7 +9,7 @@ Future<void> updateUserInfo(
   required String newName,
   required String newEmail,
 }) async {
-  final url = Uri.parse("$baseURL/api/user/reviseUserInfo");
+  final url = Uri.parse("$baseURL/api/user/updateUserInfo");
   try {
     final response = await http.post(
       url,

@@ -204,8 +204,8 @@ class _LoginPageDesktopState extends State<_LoginPageDesktop> {
         children: [
           Center(
             child: Container(
-              width: MediaQuery.of(context).size.width *
-                  0.3, // Set width to half of the screen width
+              width: MediaQuery.of(context).size.width /
+                  3, // Set width to half of the screen width
               child: TextFormField(
                 decoration: InputDecoration(
                   hintText: "Username",
@@ -232,7 +232,7 @@ class _LoginPageDesktopState extends State<_LoginPageDesktop> {
           const SizedBox(height: 50),
           Center(
             child: Container(
-              width: MediaQuery.of(context).size.width * 0.3,
+              width: MediaQuery.of(context).size.width / 3,
               child: TextFormField(
                 decoration: InputDecoration(
                   hintText: "Password",
@@ -260,8 +260,8 @@ class _LoginPageDesktopState extends State<_LoginPageDesktop> {
           const SizedBox(height: 50),
           Center(
             child: Container(
-              width: MediaQuery.of(context).size.width *
-                  0.3, // Set width to half of the screen width
+              width: MediaQuery.of(context).size.width /
+                  3, // Set width to half of the screen width
               child: ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {

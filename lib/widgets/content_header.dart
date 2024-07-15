@@ -258,19 +258,22 @@ class _ContentHeaderDesktopState extends State<_ContentHeaderDesktop> {
                       '$baseURL/${widget.featuredContent.titleImageUrl}'),
                 ),
                 const SizedBox(height: 15.0),
-                Text(
-                  widget.featuredContent.description!.replaceAll(r'\n', '\n'),
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w500,
-                    shadows: [
-                      Shadow(
-                        color: Colors.black,
-                        offset: Offset(2.0, 4.0),
-                        blurRadius: 6.0,
-                      ),
-                    ],
+                Container(
+                  width: MediaQuery.of(context).size.width / 3,
+                  child: Text(
+                    widget.featuredContent.description!,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w500,
+                      shadows: [
+                        Shadow(
+                          color: Colors.black,
+                          offset: Offset(2.0, 4.0),
+                          blurRadius: 6.0,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20.0),

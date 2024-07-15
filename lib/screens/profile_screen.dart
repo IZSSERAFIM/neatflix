@@ -4,15 +4,20 @@ import 'package:neatflix/user/user_info.dart';
 import 'package:neatflix/widgets/widgets.dart';
 import 'package:neatflix/user/user.dart';
 import 'package:neatflix/utils/utils.dart';
+import 'package:neatflix/cubits/cubits.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Responsive(
-      mobile: _ProfileScreenMobile(),
-      desktop: _ProfileScreenDesktop(),
+    return BlocProvider(
+      create: (context) => AvatarCubit()..fetchAvatar(),
+      child: Responsive(
+        mobile: _ProfileScreenMobile(),
+        desktop: _ProfileScreenDesktop(),
+      ),
     );
   }
 }
@@ -26,12 +31,14 @@ class _ProfileScreenMobile extends StatefulWidget {
 
 class _ProfileScreenMobileState extends State<_ProfileScreenMobile> {
   late Future<List<dynamic>> _combinedFutures;
+
   @override
   void initState() {
     super.initState();
     _combinedFutures = Future.wait([
       getUserInfo(),
     ]);
+    context.read<AvatarCubit>().fetchAvatar();
   }
 
   void _showEditDialog(BuildContext context) {
@@ -93,6 +100,7 @@ class _ProfileScreenMobileState extends State<_ProfileScreenMobile> {
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size(screenSize.width, 50.0),
@@ -111,67 +119,79 @@ class _ProfileScreenMobileState extends State<_ProfileScreenMobile> {
             var combinedData = snapshot.data!;
             var userData = combinedData[0];
 
-            return Container(
-              margin: const EdgeInsets.all(24),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
+            return BlocBuilder<AvatarCubit, String>(
+              builder: (context, userAvatar) {
+                return Container(
+                  margin: const EdgeInsets.all(24),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      CircleAvatar(
-                        radius: 50,
-                        backgroundImage: NetworkImage(userAvatar),
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        userName,
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
+                      Column(
                         children: [
-                          Icon(Icons.email, color: Colors.grey),
-                          SizedBox(width: 8),
-                          Text(
-                            userEmail,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey,
+                          GestureDetector(
+                            onTap: () async {
+                              final newAvatar = await getRandomAvatar();
+                              context.read<AvatarCubit>().emit(newAvatar);
+                            },
+                            child: CircleAvatar(
+                              radius: 50,
+                              backgroundImage:
+                                  NetworkImage('$baseURL/$userAvatar'),
                             ),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            userName,
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.email, color: Colors.grey),
+                              SizedBox(width: 8),
+                              Text(
+                                userEmail,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Divider(),
+                          ListTile(
+                            leading: Icon(Icons.edit),
+                            title: Text('Edit Profile'),
+                            onTap: () => _showEditDialog(context),
+                          ),
+                          ListTile(
+                            leading: Icon(Icons.logout),
+                            title: Text('Logout'),
+                            onTap: () async {
+                              await Logout(context);
+                              token = userEmail = userName = userAvatar = "";
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LoginPage(),
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
                     ],
                   ),
-                  Column(
-                    children: [
-                      Divider(),
-                      ListTile(
-                        leading: Icon(Icons.edit),
-                        title: Text('Edit Profile'),
-                        onTap: () => _showEditDialog(context),
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.logout),
-                        title: Text('Logout'),
-                        onTap: () {
-                          token = userEmail = userName = userAvatar = "";
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LoginPage(),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                );
+              },
             );
           }
           return Container(); // Fallback for unexpected state
@@ -190,12 +210,14 @@ class _ProfileScreenDesktop extends StatefulWidget {
 
 class _ProfileScreenDesktopState extends State<_ProfileScreenDesktop> {
   late Future<List<dynamic>> _combinedFutures;
+
   @override
   void initState() {
     super.initState();
     _combinedFutures = Future.wait([
       getUserInfo(),
     ]);
+    context.read<AvatarCubit>().fetchAvatar();
   }
 
   void _showEditDialog(BuildContext context) {
@@ -275,82 +297,95 @@ class _ProfileScreenDesktopState extends State<_ProfileScreenDesktop> {
             var combinedData = snapshot.data!;
             var userData = combinedData[0];
 
-            return Container(
-              margin: const EdgeInsets.all(24),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
+            return BlocBuilder<AvatarCubit, String>(
+              builder: (context, userAvatar) {
+                return Container(
+                  margin: const EdgeInsets.all(24),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      CircleAvatar(
-                        radius: 50,
-                        backgroundImage: NetworkImage(userAvatar),
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        userName,
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
+                      Column(
                         children: [
-                          Icon(Icons.email, color: Colors.grey),
-                          SizedBox(width: 8),
+                          GestureDetector(
+                            onTap: () async {
+                              final newAvatar = await getRandomAvatar();
+                              context.read<AvatarCubit>().emit(newAvatar);
+                            },
+                            child: CircleAvatar(
+                              radius: 50,
+                              backgroundImage:
+                                  NetworkImage('$baseURL/$userAvatar'),
+                            ),
+                          ),
+                          SizedBox(height: 10),
                           Text(
-                            userEmail,
+                            userName,
                             style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.email, color: Colors.grey),
+                              SizedBox(width: 8),
+                              Text(
+                                userEmail,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Center(
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: Divider(),
+                            ),
+                          ),
+                          Center(
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: ListTile(
+                                leading: Icon(Icons.edit),
+                                title: Text('Edit Profile'),
+                                onTap: () => _showEditDialog(context),
+                              ),
+                            ),
+                          ),
+                          Center(
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: ListTile(
+                                leading: Icon(Icons.logout),
+                                title: Text('Logout'),
+                                onTap: () async {
+                                  await Logout(context);
+                                  token =
+                                      userEmail = userName = userAvatar = "";
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => LoginPage(),
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ],
                   ),
-                  Column(
-                    children: [
-                      Center(
-                        child: Container(
-                          width: MediaQuery.of(context).size.width * 0.3,
-                          child: Divider(),
-                        ),
-                      ),
-                      Center(
-                        child: Container(
-                          width: MediaQuery.of(context).size.width * 0.3,
-                          child: ListTile(
-                            leading: Icon(Icons.edit),
-                            title: Text('Edit Profile'),
-                            onTap: () => _showEditDialog(context),
-                          ),
-                        ),
-                      ),
-                      Center(
-                        child: Container(
-                          width: MediaQuery.of(context).size.width * 0.3,
-                          child: ListTile(
-                            leading: Icon(Icons.logout),
-                            title: Text('Logout'),
-                            onTap: () {
-                              token = userEmail = userName = userAvatar = "";
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LoginPage(),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                );
+              },
             );
           }
           return Container(); // Fallback for unexpected state

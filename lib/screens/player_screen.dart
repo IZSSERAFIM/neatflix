@@ -3,8 +3,6 @@ import 'package:neatflix/models/models.dart';
 import 'package:neatflix/widgets/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:neatflix/utils/utils.dart';
-import 'package:flutter/services.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class PlayerScreen extends StatelessWidget {
   const PlayerScreen({Key? key, required this.content}) : super(key: key);
@@ -34,6 +32,7 @@ class _PlayerScreenMobile extends StatefulWidget {
 
 class _PlayerScreenMobileState extends State<_PlayerScreenMobile> {
   late Future<List<dynamic>> _combinedFutures;
+
   @override
   void initState() {
     super.initState();
@@ -137,6 +136,7 @@ class _PlayerScreenDesktop extends StatefulWidget {
   const _PlayerScreenDesktop({Key? key, required this.content})
       : super(key: key);
   final Content content;
+
   @override
   State<_PlayerScreenDesktop> createState() => _PlayerScreenDesktopState();
 }
@@ -171,8 +171,7 @@ class _PlayerScreenDesktopState extends State<_PlayerScreenDesktop> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: VideoDescription(
-                        title: widget.content.name,
-                        description: widget.content.description!,
+                        titleImageUrl: widget.content.titleImageUrl,
                       ),
                     ),
                     Padding(
@@ -198,6 +197,32 @@ class _PlayerScreenDesktopState extends State<_PlayerScreenDesktop> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: VerticalIconButton(
+                        icon: Icons.info,
+                        title: 'Info',
+                        onTap: () async {
+                          await showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text('${widget.content.name}'),
+                                content: Text(widget.content.description!),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text('Close'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: VerticalIconButton(
                         icon: Icons.add,
                         title: 'List',
                         onTap: () async {
@@ -216,21 +241,6 @@ class _PlayerScreenDesktopState extends State<_PlayerScreenDesktop> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text('Copied to clipboard')),
                           );
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: VerticalIconButton(
-                        icon: Icons.download,
-                        title: 'Download',
-                        onTap: () async {
-                          final Uri url = Uri.parse(widget.content.videoUrl!);
-                          if (await canLaunchUrl(url)) {
-                            await launchUrl(url);
-                          } else {
-                            throw 'Could not launch $url';
-                          }
                         },
                       ),
                     ),
