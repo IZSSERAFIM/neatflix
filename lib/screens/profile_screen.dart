@@ -162,6 +162,21 @@ class _ProfileScreenMobileState extends State<_ProfileScreenMobile> {
                               ),
                             ],
                           ),
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.verified, color: Colors.grey),
+                              SizedBox(width: 8),
+                              Text(
+                                isVip ? 'VIP Member' : 'Regular Member',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                       Column(
@@ -171,6 +186,13 @@ class _ProfileScreenMobileState extends State<_ProfileScreenMobile> {
                             leading: Icon(Icons.edit),
                             title: Text('Edit Profile'),
                             onTap: () => _showEditDialog(context),
+                          ),
+                          ListTile(
+                            leading: Icon(Icons.verified),
+                            title: Text('VIP Membership'),
+                            onTap: () async {
+                              await getVip(context);
+                            },
                           ),
                           ListTile(
                             leading: Icon(Icons.logout),
@@ -340,6 +362,21 @@ class _ProfileScreenDesktopState extends State<_ProfileScreenDesktop> {
                               ),
                             ],
                           ),
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.verified, color: Colors.grey),
+                              SizedBox(width: 8),
+                              Text(
+                                isVip ? 'VIP Member' : 'Regular Member',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                       Column(
@@ -357,6 +394,18 @@ class _ProfileScreenDesktopState extends State<_ProfileScreenDesktop> {
                                 leading: Icon(Icons.edit),
                                 title: Text('Edit Profile'),
                                 onTap: () => _showEditDialog(context),
+                              ),
+                            ),
+                          ),
+                          Center(
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: ListTile(
+                                leading: Icon(Icons.verified),
+                                title: Text('VIP Membership'),
+                                onTap: () async {
+                                  await getVip(context);
+                                },
                               ),
                             ),
                           ),

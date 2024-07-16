@@ -83,7 +83,7 @@ class _ContentHeaderMobileState extends State<_ContentHeaderMobile> {
               child: isPlaying
                   ? VideoPlayer(_videoController)
                   : Image.network(
-                      '$baseURL/${widget.featuredContent.imageUrl}',
+                      widget.featuredContent.imageUrl,
                       fit: BoxFit.cover,
                     ),
             );
@@ -112,8 +112,7 @@ class _ContentHeaderMobileState extends State<_ContentHeaderMobile> {
           bottom: 110.0,
           child: SizedBox(
             width: 250.0,
-            child: Image.network(
-                '$baseURL/${widget.featuredContent.titleImageUrl}'),
+            child: Image.network(widget.featuredContent.titleImageUrl!),
           ),
         ),
         Positioned(
@@ -221,7 +220,7 @@ class _ContentHeaderDesktopState extends State<_ContentHeaderDesktop> {
             child: _videoController.value.isInitialized
                 ? VideoPlayer(_videoController)
                 : Image.network(
-                    '$baseURL/${widget.featuredContent.imageUrl}',
+                    widget.featuredContent.imageUrl,
                     fit: BoxFit.cover,
                   ),
           ),
@@ -254,8 +253,7 @@ class _ContentHeaderDesktopState extends State<_ContentHeaderDesktop> {
               children: [
                 SizedBox(
                   width: 250.0,
-                  child: Image.network(
-                      '$baseURL/${widget.featuredContent.titleImageUrl}'),
+                  child: Image.network(widget.featuredContent.titleImageUrl!),
                 ),
                 const SizedBox(height: 15.0),
                 Container(

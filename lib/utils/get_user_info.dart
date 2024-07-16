@@ -21,6 +21,7 @@ Future<void> getUserInfo() async {
       userName = data['nickName'];
       userEmail = data['userEmail'];
       userAvatar = data['userAvatar'];
+      isVip = data['isVIP'];
     } else {
       print("Failed to get user info: ${response.body}");
     }

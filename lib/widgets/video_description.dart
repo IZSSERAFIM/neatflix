@@ -84,7 +84,7 @@ class _VideoDescriptionDesktopState extends State<_VideoDescriptionDesktop> {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width / 7,
-      child: Image.network('$baseURL/${widget.titleImageUrl}'),
+      child: Image.network(widget.titleImageUrl),
     );
   }
 }

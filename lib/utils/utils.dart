@@ -16,3 +16,4 @@ export 'update_profile.dart';
 export 'rate_video.dart';
 export 'get_random_avatar.dart';
 export 'logout.dart';
+export 'get_vip.dart';
