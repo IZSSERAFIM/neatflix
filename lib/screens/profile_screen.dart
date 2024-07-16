@@ -166,7 +166,9 @@ class _ProfileScreenMobileState extends State<_ProfileScreenMobile> {
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.verified, color: Colors.grey),
+                              isVip
+                                  ? Icon(Icons.verified, color: Colors.grey)
+                                  : Icon(Icons.cancel, color: Colors.grey),
                               SizedBox(width: 8),
                               Text(
                                 isVip ? 'VIP Member' : 'Regular Member',
@@ -189,9 +191,22 @@ class _ProfileScreenMobileState extends State<_ProfileScreenMobile> {
                           ),
                           ListTile(
                             leading: Icon(Icons.verified),
-                            title: Text('VIP Membership'),
+                            title: Text('Get VIP Membership'),
                             onTap: () async {
                               await getVip(context);
+                              setState(() {
+                                isVip = true;
+                              });
+                            },
+                          ),
+                          ListTile(
+                            leading: Icon(Icons.cancel),
+                            title: Text('Cancel VIP Membership'),
+                            onTap: () async {
+                              await cancelVip(context);
+                              setState(() {
+                                isVip = false;
+                              });
                             },
                           ),
                           ListTile(
@@ -366,7 +381,9 @@ class _ProfileScreenDesktopState extends State<_ProfileScreenDesktop> {
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.verified, color: Colors.grey),
+                              isVip
+                                  ? Icon(Icons.verified, color: Colors.grey)
+                                  : Icon(Icons.cancel, color: Colors.grey),
                               SizedBox(width: 8),
                               Text(
                                 isVip ? 'VIP Member' : 'Regular Member',
@@ -402,9 +419,27 @@ class _ProfileScreenDesktopState extends State<_ProfileScreenDesktop> {
                               width: MediaQuery.of(context).size.width * 0.3,
                               child: ListTile(
                                 leading: Icon(Icons.verified),
-                                title: Text('VIP Membership'),
+                                title: Text('Get VIP Membership'),
                                 onTap: () async {
                                   await getVip(context);
+                                  setState(() {
+                                    isVip = true;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                          Center(
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: ListTile(
+                                leading: Icon(Icons.cancel),
+                                title: Text('Cancel VIP Membership'),
+                                onTap: () async {
+                                  await cancelVip(context);
+                                  setState(() {
+                                    isVip = false;
+                                  });
                                 },
                               ),
                             ),
