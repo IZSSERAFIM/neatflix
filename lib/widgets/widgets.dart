@@ -9,3 +9,4 @@ export 'rating_bar.dart';
 export 'video_description.dart';
 export 'header_player.dart';
 export 'category_bar.dart';
+export 'comment_list.dart';

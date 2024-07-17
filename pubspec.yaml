@@ -41,6 +41,7 @@ dependencies:
   chewie: ^1.8.1
   http: any
   universal_html: ^2.2.4
+  comment_box: ^0.0.18
 
 dev_dependencies:
   flutter_test:

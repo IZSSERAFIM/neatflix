@@ -121,11 +121,18 @@ class _PlayerScreenMobileState extends State<_PlayerScreenMobile> {
                       ],
                     ),
                   ),
+                  // CommentList(),
                 ],
               ),
             );
           }
           return Container(); // Fallback for unexpected state
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.comment),
+        onPressed: () {
+          showDialog(context: context, builder: (context) => CommentList());
         },
       ),
     );
@@ -250,6 +257,12 @@ class _PlayerScreenDesktopState extends State<_PlayerScreenDesktop> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.comment),
+        onPressed: () {
+          showDialog(context: context, builder: (context) => CommentList());
+        },
       ),
     );
   }

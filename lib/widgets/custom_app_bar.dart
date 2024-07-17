@@ -11,6 +11,7 @@ class CustomAppBar extends StatelessWidget {
   final bool isSearch;
   final bool isProfile;
   final bool isPlayer;
+  final bool isHistory;
   const CustomAppBar({
     this.scrollOffset = 0.0,
     this.isHome = false,
@@ -18,6 +19,7 @@ class CustomAppBar extends StatelessWidget {
     this.isSearch = false,
     this.isProfile = false,
     this.isPlayer = false,
+    this.isHistory = false,
   });
   @override
   Widget build(BuildContext context) {
@@ -32,6 +34,8 @@ class CustomAppBar extends StatelessWidget {
       PageIndex = 3;
     } else if (isPlayer) {
       PageIndex = 4;
+    } else if (isHistory) {
+      PageIndex = 5;
     }
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
@@ -114,9 +118,7 @@ class _CustomAppBarDesktop extends StatelessWidget {
                 _AppBarButton(
                   title: 'Home',
                   onTap: () {
-                    if (PageIndex == 0) {
-                      return;
-                    }
+                    if (PageIndex == 0) return;
                     print('Home');
                     Navigator.pushReplacement(
                       context,
@@ -129,14 +131,25 @@ class _CustomAppBarDesktop extends StatelessWidget {
                 _AppBarButton(
                   title: 'List',
                   onTap: () {
-                    if (PageIndex == 1) {
-                      return;
-                    }
+                    if (PageIndex == 1) return;
                     print('List');
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) => ListScreen(),
+                      ),
+                    );
+                  },
+                ),
+                _AppBarButton(
+                  title: 'History',
+                  onTap: () {
+                    if (PageIndex == 5) return;
+                    print('History');
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HistoryScreen(),
                       ),
                     );
                   },

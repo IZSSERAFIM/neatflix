@@ -16,11 +16,13 @@ class _NavScreenState extends State<NavScreen> {
     HomeScreen(key: PageStorageKey('homeScreen')),
     SearchScreen(key: PageStorageKey('searchScreen')),
     ListScreen(key: PageStorageKey('listScreen')),
+    HistoryScreen(key: PageStorageKey('historyScreen')),
   ];
   final Map<String, IconData> _icons = const {
     'Home': Icons.home,
     'Search': Icons.search,
     'List': Icons.list_alt,
+    'History': Icons.history,
   };
   int _currentIndex = 0;
   @override

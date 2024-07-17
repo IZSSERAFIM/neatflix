@@ -41,6 +41,7 @@ class _HomeScreenMobileState extends State<_HomeScreenMobile> {
       getUserPlayList(),
       getOriginals(),
       getTrending(),
+      getUserHistory(),
     ]);
   }
 
@@ -84,6 +85,8 @@ class _HomeScreenMobileState extends State<_HomeScreenMobile> {
                 List<Content>.from(combinedData[3] as List<dynamic>);
             var trendingContent =
                 List<Content>.from(combinedData[4] as List<dynamic>);
+            var historyContent =
+                List<Content>.from(combinedData[5] as List<dynamic>);
 
             return CustomScrollView(
               controller: _scrollcontroller,
@@ -131,6 +134,14 @@ class _HomeScreenMobileState extends State<_HomeScreenMobile> {
                     ),
                   ),
                 ),
+                SliverToBoxAdapter(
+                  child: ContentList(
+                    key: PageStorageKey('watchhistory'),
+                    title: 'Watched History',
+                    contentList: historyContent,
+                    isOriginals: false,
+                  ),
+                ),
               ],
             );
           } else {
@@ -161,6 +172,7 @@ class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
       getUserPlayList(),
       getOriginals(),
       getTrending(),
+      getUserHistory(),
     ]);
   }
 
@@ -192,6 +204,8 @@ class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
                 List<Content>.from(combinedData[3] as List<dynamic>);
             var trendingContent =
                 List<Content>.from(combinedData[4] as List<dynamic>);
+            var historyContent =
+                List<Content>.from(combinedData[5] as List<dynamic>);
 
             return CustomScrollView(
               slivers: [
@@ -236,6 +250,14 @@ class _HomeScreenDesktopState extends State<_HomeScreenDesktop> {
                       contentList: trendingContent,
                       isOriginals: false,
                     ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: ContentList(
+                    key: PageStorageKey('watchhistory'),
+                    title: 'Watched History',
+                    contentList: historyContent,
+                    isOriginals: false,
                   ),
                 ),
               ],

@@ -18,3 +18,6 @@ export 'get_random_avatar.dart';
 export 'logout.dart';
 export 'get_vip.dart';
 export 'cancel_vip.dart';
+export 'get_user_history.dart';
+export 'get_comments.dart';
+export 'post_comments.dart';
