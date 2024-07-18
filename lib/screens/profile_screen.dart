@@ -45,29 +45,47 @@ class _ProfileScreenMobileState extends State<_ProfileScreenMobile> {
     final _nameController = TextEditingController(text: userName);
     final _emailController = TextEditingController(text: userEmail);
 
+    final _formKey = GlobalKey<FormState>(); // Step 1
+
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: Text('Edit Profile'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: _nameController,
-                decoration: InputDecoration(
-                  labelText: 'Name',
-                  icon: Icon(Icons.person),
+          content: Form(
+            // Step 2
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: _nameController,
+                  decoration: InputDecoration(
+                    labelText: 'Name',
+                    icon: Icon(Icons.person),
+                  ),
                 ),
-              ),
-              TextField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  icon: Icon(Icons.email),
+                TextFormField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    icon: Icon(Icons.email),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Email cannot be empty';
+                    }
+                    String pattern =
+                        r'^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$';
+                    RegExp regex = RegExp(pattern);
+                    if (!regex.hasMatch(value)) {
+                      return 'Enter a valid email address';
+                    }
+                    return null;
+                  },
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           actions: [
             TextButton(
@@ -77,17 +95,22 @@ class _ProfileScreenMobileState extends State<_ProfileScreenMobile> {
               child: Text('Cancel'),
             ),
             TextButton(
-              onPressed: () async {
-                await updateUserInfo(
-                  context,
-                  newName: _nameController.text,
-                  newEmail: _emailController.text,
-                );
-                setState(() {
-                  userName = _nameController.text;
-                  userEmail = _emailController.text;
-                });
-                Navigator.of(context).pop();
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  // Step 3
+                  // If the form is valid, proceed to update user info
+                  updateUserInfo(
+                    context,
+                    newName: _nameController.text,
+                    newEmail: _emailController.text,
+                  ).then((_) {
+                    setState(() {
+                      userName = _nameController.text;
+                      userEmail = _emailController.text;
+                    });
+                    Navigator.of(context).pop();
+                  });
+                }
               },
               child: Text('Save'),
             ),
@@ -261,29 +284,47 @@ class _ProfileScreenDesktopState extends State<_ProfileScreenDesktop> {
     final _nameController = TextEditingController(text: userName);
     final _emailController = TextEditingController(text: userEmail);
 
+    final _formKey = GlobalKey<FormState>(); // Step 1
+
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: Text('Edit Profile'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: _nameController,
-                decoration: InputDecoration(
-                  labelText: 'Name',
-                  icon: Icon(Icons.person),
+          content: Form(
+            // Step 2
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: _nameController,
+                  decoration: InputDecoration(
+                    labelText: 'Name',
+                    icon: Icon(Icons.person),
+                  ),
                 ),
-              ),
-              TextField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  icon: Icon(Icons.email),
+                TextFormField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    icon: Icon(Icons.email),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Email cannot be empty';
+                    }
+                    String pattern =
+                        r'^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$';
+                    RegExp regex = RegExp(pattern);
+                    if (!regex.hasMatch(value)) {
+                      return 'Enter a valid email address';
+                    }
+                    return null;
+                  },
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           actions: [
             TextButton(
@@ -293,17 +334,22 @@ class _ProfileScreenDesktopState extends State<_ProfileScreenDesktop> {
               child: Text('Cancel'),
             ),
             TextButton(
-              onPressed: () async {
-                await updateUserInfo(
-                  context,
-                  newName: _nameController.text,
-                  newEmail: _emailController.text,
-                );
-                setState(() {
-                  userName = _nameController.text;
-                  userEmail = _emailController.text;
-                });
-                Navigator.of(context).pop();
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  // Step 3
+                  // If the form is valid, proceed to update user info
+                  updateUserInfo(
+                    context,
+                    newName: _nameController.text,
+                    newEmail: _emailController.text,
+                  ).then((_) {
+                    setState(() {
+                      userName = _nameController.text;
+                      userEmail = _emailController.text;
+                    });
+                    Navigator.of(context).pop();
+                  });
+                }
               },
               child: Text('Save'),
             ),
