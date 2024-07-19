@@ -18,7 +18,7 @@ class Comment {
       name: data['name'],
       pic: data['pic'],
       message: data['message'],
-      date: data['date'],
+      date: data['date'].toString().substring(0, 19).replaceAll('T', ' '),
     );
   }
 }

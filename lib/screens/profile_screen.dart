@@ -158,8 +158,7 @@ class _ProfileScreenMobileState extends State<_ProfileScreenMobile> {
                             },
                             child: CircleAvatar(
                               radius: 50,
-                              backgroundImage:
-                                  NetworkImage('$baseURL/$userAvatar'),
+                              backgroundImage: NetworkImage(userAvatar),
                             ),
                           ),
                           SizedBox(height: 10),
@@ -396,8 +395,7 @@ class _ProfileScreenDesktopState extends State<_ProfileScreenDesktop> {
                             },
                             child: CircleAvatar(
                               radius: 50,
-                              backgroundImage:
-                                  NetworkImage('$baseURL/$userAvatar'),
+                              backgroundImage: NetworkImage(userAvatar),
                             ),
                           ),
                           SizedBox(height: 10),

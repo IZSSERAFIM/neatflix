@@ -132,7 +132,9 @@ class _PlayerScreenMobileState extends State<_PlayerScreenMobile> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.comment),
         onPressed: () {
-          showDialog(context: context, builder: (context) => CommentList());
+          showDialog(
+              context: context,
+              builder: (context) => CommentList(videoId: widget.content.id!));
         },
       ),
     );
@@ -261,7 +263,9 @@ class _PlayerScreenDesktopState extends State<_PlayerScreenDesktop> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.comment),
         onPressed: () {
-          showDialog(context: context, builder: (context) => CommentList());
+          showDialog(
+              context: context,
+              builder: (context) => CommentList(videoId: widget.content.id!));
         },
       ),
     );

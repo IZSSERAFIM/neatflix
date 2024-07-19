@@ -1,11 +1,18 @@
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:neatflix/models/comment_model.dart';
 import 'dart:convert';
 import 'package:neatflix/utils/utils.dart';
 import 'package:neatflix/user/user.dart';
+import 'package:neatflix/models/models.dart';
 
-Future<void> postComments(BuildContext context, value) async {
-  final url = Uri.parse("$baseURL/api/comment/postComments");
+Future<void> postComments(
+  BuildContext context,
+  String message,
+  int videoId,
+  String date,
+) async {
+  final url = Uri.parse("$baseURL/api/comment/addComment");
   try {
     final response = await http.post(
       url,
@@ -14,7 +21,9 @@ Future<void> postComments(BuildContext context, value) async {
         'Content-Type': 'application/json',
       },
       body: jsonEncode({
-        value,
+        'message': message,
+        'videoId': videoId,
+        'date': date,
       }),
     );
     if (response.statusCode == 200) {

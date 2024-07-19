@@ -1,21 +1,26 @@
 import 'package:comment_box/comment/comment.dart';
 import 'package:flutter/material.dart';
+import 'package:neatflix/models/comment_model.dart';
 import 'package:neatflix/user/user.dart';
 import 'package:neatflix/utils/utils.dart';
 import 'package:neatflix/widgets/widgets.dart';
 
 class CommentList extends StatelessWidget {
-  const CommentList({super.key});
+  const CommentList({Key? key, required this.videoId}) : super(key: key);
+  final int videoId;
 
   @override
   Widget build(BuildContext context) {
     return Responsive(
-        mobile: _CommentListMobile(), desktop: _CommentListDesktop());
+      mobile: _CommentListMobile(videoId: videoId),
+      desktop: _CommentListDesktop(videoId: videoId),
+    );
   }
 }
 
 class _CommentListMobile extends StatefulWidget {
-  const _CommentListMobile({super.key});
+  const _CommentListMobile({Key? key, required this.videoId}) : super(key: key);
+  final int videoId;
 
   @override
   State<_CommentListMobile> createState() => _CommentListMobileState();
@@ -32,7 +37,6 @@ class _CommentListMobileState extends State<_CommentListMobile> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController commentController = TextEditingController();
   List? filedata = [];
-
   String? name;
   String? avatar;
 
@@ -45,7 +49,7 @@ class _CommentListMobileState extends State<_CommentListMobile> {
   }
 
   Future<void> fetchComments() async {
-    var comments = await getComments();
+    var comments = await getComments(widget.videoId, pageCount);
     print("Comments: $comments");
     setState(() {
       filedata = [...?filedata, ...comments];
@@ -93,6 +97,8 @@ class _CommentListMobileState extends State<_CommentListMobile> {
     );
   }
 
+  int pageCount = 0;
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -101,8 +107,7 @@ class _CommentListMobileState extends State<_CommentListMobile> {
         width: MediaQuery.of(context).size.width * 0.9,
         height: MediaQuery.of(context).size.height * 0.9,
         child: CommentBox(
-          userImage:
-              CommentBox.commentImageParser(imageURLorPath: '$baseURL/$avatar'),
+          userImage: CommentBox.commentImageParser(imageURLorPath: avatar),
           child: commentChild(filedata),
           labelText: 'Write a comment...',
           errorText: 'Comment cannot be blank',
@@ -113,12 +118,17 @@ class _CommentListMobileState extends State<_CommentListMobile> {
               setState(() {
                 var value = {
                   'name': name,
-                  'pic': '$baseURL/$avatar',
+                  'pic': avatar,
                   'message': commentController.text,
                   'date': DateTime.now().toString().substring(0, 19),
                 };
                 filedata?.insert(0, value);
-                // postComments(context, value);
+                postComments(
+                  context,
+                  commentController.text,
+                  widget.videoId,
+                  DateTime.now().toString().substring(0, 19),
+                );
                 // fetchComments();
               });
               commentController.clear();
@@ -138,6 +148,7 @@ class _CommentListMobileState extends State<_CommentListMobile> {
         IconButton(
           onPressed: () {
             fetchComments();
+            pageCount++;
           },
           icon: Icon(Icons.refresh),
         ),
@@ -153,6 +164,9 @@ class _CommentListMobileState extends State<_CommentListMobile> {
 }
 
 class _CommentListDesktop extends StatefulWidget {
+  const _CommentListDesktop({Key? key, required this.videoId})
+      : super(key: key);
+  final int videoId;
   @override
   _CommentListDesktopState createState() => _CommentListDesktopState();
 }
@@ -168,7 +182,6 @@ class _CommentListDesktopState extends State<_CommentListDesktop> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController commentController = TextEditingController();
   List? filedata = [];
-
   String? name;
   String? avatar;
 
@@ -181,7 +194,7 @@ class _CommentListDesktopState extends State<_CommentListDesktop> {
   }
 
   Future<void> fetchComments() async {
-    var comments = await getComments();
+    var comments = await getComments(widget.videoId, pageCount);
     print("Comments: $comments");
     setState(() {
       filedata = [...?filedata, ...comments];
@@ -229,6 +242,8 @@ class _CommentListDesktopState extends State<_CommentListDesktop> {
     );
   }
 
+  int pageCount = 0;
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -237,8 +252,7 @@ class _CommentListDesktopState extends State<_CommentListDesktop> {
         width: MediaQuery.of(context).size.width * 0.6,
         height: MediaQuery.of(context).size.height * 0.6,
         child: CommentBox(
-          userImage:
-              CommentBox.commentImageParser(imageURLorPath: '$baseURL/$avatar'),
+          userImage: CommentBox.commentImageParser(imageURLorPath: avatar),
           child: commentChild(filedata),
           labelText: 'Write a comment...',
           errorText: 'Comment cannot be blank',
@@ -249,12 +263,17 @@ class _CommentListDesktopState extends State<_CommentListDesktop> {
               setState(() {
                 var value = {
                   'name': name,
-                  'pic': '$baseURL/$avatar',
+                  'pic': avatar,
                   'message': commentController.text,
                   'date': DateTime.now().toString().substring(0, 19),
                 };
                 filedata?.insert(0, value);
-                // postComments(context, value);
+                postComments(
+                  context,
+                  commentController.text,
+                  widget.videoId,
+                  DateTime.now().toString().substring(0, 19),
+                );
                 // fetchComments();
               });
               commentController.clear();
@@ -274,6 +293,7 @@ class _CommentListDesktopState extends State<_CommentListDesktop> {
         IconButton(
           onPressed: () {
             fetchComments();
+            pageCount++;
           },
           icon: Icon(Icons.refresh),
         ),
