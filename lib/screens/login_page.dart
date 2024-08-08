@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:neatflix/screens/screens.dart';
-import 'package:neatflix/utils/get_headerContent.dart';
 import 'package:neatflix/utils/utils.dart';
 import 'package:neatflix/widgets/widgets.dart';
 

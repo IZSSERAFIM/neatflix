@@ -25,6 +25,11 @@ Future<void> login(
           builder: (context) => NavScreen(),
         ),
       );
+    } else if (response.statusCode == 403) {
+      print("Login failed: ${response.body}");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('You Have Been Banned!')),
+      );
     } else {
       print("Login failed: ${response.body}");
       ScaffoldMessenger.of(context).showSnackBar(
