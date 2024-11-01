@@ -1,8 +1,5 @@
-# NeatFlix
-
-NeatFlix华为云仓库，储存前端代码
-=======
-
+based on [flutter_netflix_responsive_ui](https://github.com/MarcusNg/flutter_netflix_responsive_ui)
+---
 A new Flutter project.
 
 ## Getting Started
